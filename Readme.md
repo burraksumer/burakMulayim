@@ -37,7 +37,7 @@ I hope you enjoy exploring my personal website and learn more about me and my wo
 - [Astro](https://astro.build)
 - [TailwindCSS](https://tailwindcss.com/)
 - [Cloudflare Workers](https://workers.cloudflare.com/)
-- [Netlify](https://netlify.com)
+- ~~[Netlify](https://netlify.com)~~
 - ~~[Cloudflare Pages](https://pages.dev/)~~
 
 ## Getting Started
