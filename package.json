@@ -1,5 +1,5 @@
 {
-  "name": "burakMulayim",
+  "name": "burak-mulayim",
   "private": true,
   "workspaces": {
     "packages": [
@@ -24,8 +24,8 @@
     "db:studio": "bun run --filter @burakMulayim/db db:studio",
     "db:generate": "bun run --filter @burakMulayim/db db:generate",
     "db:migrate": "bun run --filter @burakMulayim/db db:migrate",
-    "db:local": "bun run --filter @burakMulayim/db db:local",
     "check": "oxlint && oxfmt --write",
+    "test": "bun run --filter '*' test",
     "prepare": "husky"
   },
   "dependencies": {

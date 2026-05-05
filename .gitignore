@@ -49,3 +49,8 @@ coverage
 .cache
 tmp
 temp
+
+# SQLite (runtime DB lives under apps/server/local.db)
+*.db
+*.db-shm
+*.db-wal
