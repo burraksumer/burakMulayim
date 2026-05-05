@@ -47,7 +47,7 @@ ENV NODE_ENV=production \
     PORT=4321
 
 EXPOSE 4321
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 --start-period=30s --start-interval=1s \
   CMD wget -q -O- http://localhost:4321/ > /dev/null || exit 1
 
 CMD ["bun", "./dist/server/entry.mjs"]

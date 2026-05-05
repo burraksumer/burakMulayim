@@ -39,7 +39,7 @@ ENV NODE_ENV=production \
     POSTS_DIR=/app/apps/server/content/posts
 
 EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 --start-period=30s --start-interval=1s \
   CMD wget -q -O- http://localhost:3000/healthz || exit 1
 
 CMD ["bun", "src/index.ts"]

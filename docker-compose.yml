@@ -27,9 +27,11 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-q", "-O-", "http://localhost:3000/healthz"]
-      interval: 30s
+      interval: 30s # steady-state cadence after the app is healthy
       timeout: 3s
       retries: 3
+      start_period: 30s # grace window during startup
+      start_interval: 1s # poll every 1s during the grace window
     labels:
       - coolify.managed=true
       - coolify.proxy.host=api.mulayim.app
