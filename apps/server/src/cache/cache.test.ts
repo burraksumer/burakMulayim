@@ -30,6 +30,39 @@ describe("Cache", () => {
     expect(entry!.stale).toBe(false);
     expect(entry!.fetched_at.getTime()).toBe(100);
     expect(entry!.last_success_at.getTime()).toBe(100);
+    expect(entry!.last_changed_at.getTime()).toBe(100);
+  });
+
+  it("preserves last_changed_at when refetched value is identical", async () => {
+    const fetcher = async () => ({ score: 42 });
+    await cache.get({ key: "x", ttlMs: 0, fetcher, now: () => 100 });
+    const second = await cache.get({ key: "x", ttlMs: 0, fetcher, now: () => 5000 });
+    expect(second!.fetched_at.getTime()).toBe(5000);
+    expect(second!.last_success_at.getTime()).toBe(5000);
+    expect(second!.last_changed_at.getTime()).toBe(100); // unchanged
+  });
+
+  it("bumps last_changed_at when refetched value differs", async () => {
+    let v = 1;
+    const fetcher = async () => ({ score: v });
+    await cache.get({ key: "x", ttlMs: 0, fetcher, now: () => 100 });
+    v = 2;
+    const second = await cache.get({ key: "x", ttlMs: 0, fetcher, now: () => 5000 });
+    expect(second!.value).toEqual({ score: 2 });
+    expect(second!.last_changed_at.getTime()).toBe(5000);
+  });
+
+  it("preserves last_changed_at across upstream failures", async () => {
+    let mode: "good" | "fail" = "good";
+    const fetcher = async () => {
+      if (mode === "fail") throw new Error("503");
+      return { score: 1 };
+    };
+    await cache.get({ key: "x", ttlMs: 0, fetcher, now: () => 100 });
+    mode = "fail";
+    const stale = await cache.get({ key: "x", ttlMs: 0, fetcher, now: () => 9999 });
+    expect(stale!.stale).toBe(true);
+    expect(stale!.last_changed_at.getTime()).toBe(100);
   });
 
   it("serves last-good value when upstream fails after a prior success", async () => {

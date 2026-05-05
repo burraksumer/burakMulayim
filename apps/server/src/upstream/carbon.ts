@@ -22,7 +22,7 @@ interface CarbonDataResponse {
   };
 }
 
-type CarbonValue = Omit<Carbon, "fetched_at" | "last_success_at" | "stale">;
+type CarbonValue = Omit<Carbon, "fetched_at" | "last_success_at" | "last_changed_at" | "stale">;
 
 async function measureBytes(url: string, fetch: typeof globalThis.fetch): Promise<number> {
   const res = await fetch(url, { signal: AbortSignal.timeout(15_000) });

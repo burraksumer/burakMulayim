@@ -21,6 +21,7 @@ export const CarbonSchema = z.object({
   }),
   fetched_at: z.iso.datetime(),
   last_success_at: z.iso.datetime(),
+  last_changed_at: z.iso.datetime(),
   stale: z.boolean(),
 });
 

@@ -5,6 +5,7 @@ export const upstreamCache = sqliteTable("upstream_cache", {
   value: text("value", { mode: "json" }).notNull(),
   fetchedAt: integer("fetched_at", { mode: "timestamp_ms" }).notNull(),
   lastSuccessAt: integer("last_success_at", { mode: "timestamp_ms" }).notNull(),
+  lastChangedAt: integer("last_changed_at", { mode: "timestamp_ms" }).notNull(),
 });
 
 export type UpstreamCacheRow = typeof upstreamCache.$inferSelect;

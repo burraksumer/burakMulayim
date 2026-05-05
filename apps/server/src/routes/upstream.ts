@@ -39,6 +39,7 @@ export function upstreamRoutes(deps: UpstreamRouteDeps) {
         ...entry.value,
         fetched_at: entry.fetched_at.toISOString(),
         last_success_at: entry.last_success_at.toISOString(),
+        last_changed_at: entry.last_changed_at.toISOString(),
         stale: entry.stale,
       };
     })
