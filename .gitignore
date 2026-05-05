@@ -54,3 +54,6 @@ temp
 *.db
 *.db-shm
 *.db-wal
+
+# Local Compose overrides (host port mappings, etc.) — not for production
+docker-compose.override.yml
