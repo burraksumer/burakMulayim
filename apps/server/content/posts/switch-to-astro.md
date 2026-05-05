@@ -3,8 +3,7 @@ layout: "../../layouts/BlogPostLayout.astro"
 title: Why did I switch to Astro?
 date: 2023-02-07
 author: Burak Sümer
-image:
-  { src: "/images/astro.webp", alt: "Astronaut image resembling Astro.build" }
+image: { src: "/images/astro.webp", alt: "Astronaut image resembling Astro.build" }
 description: I switched from Ghost to Astro for my blog platform. The hosting and maintainability issues with Ghost became too much to handle. Astro's simpleness, use of serverless technology, and efficient CI/CD make it an ideal solution for my needs as a tech-savvy who values minimalism and simplicity. The use of serverless technology means I don't have to worry about server costs and maintenance, while CI/CD ensures my blog is always up-to-date and secure. Additionally, Astro's minimalistic approach means pages load quickly without any unnecessary bloat, making it the perfect fit for a minimalist like myself.
 draft: false
 category: Technology
