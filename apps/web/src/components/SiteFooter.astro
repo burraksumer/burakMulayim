@@ -12,7 +12,7 @@ const KB_CLUB_TIER: "green" | "orange" | "blue" = "green";
 ---
 
 <footer
-  class="mx-auto w-full max-w-2xl border-t border-[var(--color-ink-rule)] px-6 py-8 font-mono text-xs text-[var(--color-ink-3)]"
+  class="border-ink-rule text-ink-3 mx-auto w-full max-w-2xl border-t px-6 py-8 font-mono text-xs"
 >
   <div>
     <p>
@@ -21,22 +21,22 @@ const KB_CLUB_TIER: "green" | "orange" | "blue" = "green";
           <>
             this page emits ≈ {carbon.gco2e.toFixed(4)}g CO₂ — cleaner than{" "}
             {Math.round(carbon.cleanerThan * 100)}%
-            <span class="ml-1 text-[var(--color-ink-2)]">({carbon.rating})</span>
+            <span class="text-ink-2 ml-1">({carbon.rating})</span>
           </>
         ) : (
           <>built lean</>
         )
       }
-      <span class="mx-2 text-[var(--color-ink-rule)]">·</span>
+      <span class="text-ink-rule mx-2">·</span>
       <a
         href="https://512kb.club/"
         target="_blank"
         rel="noopener noreferrer"
-        class="group/link hover:text-[var(--color-ink-1)]"
+        class="group/link hover:text-ink-1"
       >
         512kb.club {KB_CLUB_TIER}
         <span
-          class="ml-0.5 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+          class="text-ink-3 group-hover/link:text-ink-accent ml-0.5 align-super font-mono text-[10px]"
           aria-hidden="true"
         >
           ↗

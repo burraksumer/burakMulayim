@@ -1,10 +1,21 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "unicorn", "oxc"],
+  "jsPlugins": ["oxlint-tailwindcss"],
   "categories": {
     "correctness": "error"
   },
-  "rules": {},
+  "rules": {
+    "tailwindcss/no-unnecessary-arbitrary-value": "error",
+    "tailwindcss/enforce-canonical": "error",
+    "tailwindcss/no-conflicting-classes": "error",
+    "tailwindcss/no-duplicate-classes": "error",
+    "tailwindcss/no-contradicting-variants": "error",
+    "tailwindcss/no-deprecated-classes": "error",
+    "tailwindcss/no-dark-without-light": "warn",
+    "tailwindcss/enforce-shorthand": "warn",
+    "tailwindcss/no-unnecessary-whitespace": "warn"
+  },
   "env": {
     "builtin": true
   }

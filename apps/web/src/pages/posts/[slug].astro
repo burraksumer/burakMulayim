@@ -24,11 +24,8 @@ const bodyHtml = await marked.parse(post.body);
   <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
     <!-- Breadcrumb -->
     <nav class="mb-12 font-mono text-xs">
-      <a href="/posts" class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]">
-        <span
-          class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
-          aria-hidden="true">←</span
-        >
+      <a href="/posts" class="group/link text-ink-3 hover:text-ink-1">
+        <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
         writing
       </a>
     </nav>
@@ -36,19 +33,14 @@ const bodyHtml = await marked.parse(post.body);
     <article>
       <!-- Title -->
       <header class="mb-12">
-        <h1
-          class="font-serif text-4xl leading-tight tracking-tight text-balance text-[var(--color-ink-1)]"
-        >
+        <h1 class="text-ink-1 font-serif text-4xl leading-tight tracking-tight text-balance">
           {post.title}
         </h1>
         <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
-          <time
-            class="font-mono text-xs text-[var(--color-ink-3)] tabular-nums"
-            datetime={post.date}
-          >
+          <time class="text-ink-3 font-mono text-xs tabular-nums" datetime={post.date}>
             {fmtLongDate(post.date)}
           </time>
-          <span class="font-mono text-xs text-[var(--color-ink-3)] tabular-nums">
+          <span class="text-ink-3 font-mono text-xs tabular-nums">
             {post.reading_time} min
           </span>
           {
@@ -58,7 +50,7 @@ const bodyHtml = await marked.parse(post.body);
                   <li>
                     <a
                       href={`/tags/${encodeURIComponent(tag)}`}
-                      class="text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]"
+                      class="text-ink-3 hover:text-ink-1"
                     >
                       {tag}
                     </a>

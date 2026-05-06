@@ -10,20 +10,17 @@ const bodyHtml = now ? await marked.parse(now.body) : null;
 <Layout title="Now — Burak Sümer" description="What I'm currently focused on.">
   <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
     <nav class="mb-12 font-mono text-xs">
-      <a href="/" class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]">
-        <span
-          class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
-          aria-hidden="true">←</span
-        >
+      <a href="/" class="group/link text-ink-3 hover:text-ink-1">
+        <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
         home
       </a>
     </nav>
 
     <header class="mb-12">
-      <h1 class="font-serif text-3xl tracking-tight text-[var(--color-ink-1)]">Now</h1>
+      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Now</h1>
       {
         now && (
-          <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs text-[var(--color-ink-3)]">
+          <div class="text-ink-3 mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs">
             <span>
               Updated{" "}
               <time datetime={now.last_modified} class="tabular-nums">
@@ -35,11 +32,11 @@ const bodyHtml = now ? await marked.parse(now.body) : null;
               href="https://nownownow.com/about"
               target="_blank"
               rel="noopener noreferrer"
-              class="group/link hover:text-[var(--color-ink-1)]"
+              class="group/link hover:text-ink-1"
             >
               nownownow.com
               <span
-                class="ml-0.5 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+                class="text-ink-3 group-hover/link:text-ink-accent ml-0.5 align-super font-mono text-[10px]"
                 aria-hidden="true"
               >
                 ↗
@@ -54,7 +51,7 @@ const bodyHtml = now ? await marked.parse(now.body) : null;
       now ? (
         <div class="post-body" set:html={bodyHtml ?? ""} />
       ) : (
-        <p class="text-[var(--color-ink-3)]">Now page unavailable.</p>
+        <p class="text-ink-3">Now page unavailable.</p>
       )
     }
   </main>

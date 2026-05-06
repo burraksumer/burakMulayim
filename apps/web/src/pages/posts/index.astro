@@ -18,18 +18,15 @@ const years = Array.from(byYear.keys());
   <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
     <!-- Breadcrumb / back -->
     <nav class="mb-12 font-mono text-xs">
-      <a href="/" class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]">
-        <span
-          class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
-          aria-hidden="true">←</span
-        >
+      <a href="/" class="group/link text-ink-3 hover:text-ink-1">
+        <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
         home
       </a>
     </nav>
 
     <header class="mb-16">
-      <h1 class="font-serif text-3xl tracking-tight text-[var(--color-ink-1)]">Writing</h1>
-      <p class="mt-3 text-[var(--color-ink-2)]">
+      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Writing</h1>
+      <p class="text-ink-2 mt-3">
         {posts.length}
         {posts.length === 1 ? "post" : "posts"}, oldest 2022. Long reads, short letters, technical
         notes.
@@ -38,13 +35,11 @@ const years = Array.from(byYear.keys());
 
     {
       posts.length === 0 ? (
-        <p class="text-[var(--color-ink-3)]">Posts unavailable.</p>
+        <p class="text-ink-3">Posts unavailable.</p>
       ) : (
         years.map((year) => (
           <section class="mb-12">
-            <h2 class="mb-6 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-3)] uppercase">
-              {year}
-            </h2>
+            <h2 class="text-ink-3 mb-6 font-mono text-xs tracking-[0.2em] uppercase">{year}</h2>
             <ul class="space-y-6">
               {byYear.get(year)!.map((p) => (
                 <li>
@@ -53,16 +48,16 @@ const years = Array.from(byYear.keys());
                     class="group grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-1"
                   >
                     <time
-                      class="row-start-1 pt-[3px] font-mono text-xs text-[var(--color-ink-3)] tabular-nums"
+                      class="text-ink-3 row-start-1 pt-0.75 font-mono text-xs tabular-nums"
                       datetime={p.date}
                     >
                       {fmtDate(p.date)}
                     </time>
-                    <h3 class="row-start-1 font-serif text-lg text-[var(--color-ink-1)] group-hover:text-[var(--color-ink-accent)]">
+                    <h3 class="text-ink-1 group-hover:text-ink-accent row-start-1 font-serif text-lg">
                       {p.title}
                     </h3>
                     {p.excerpt && (
-                      <p class="col-start-2 row-start-2 line-clamp-2 text-sm text-[var(--color-ink-2)]">
+                      <p class="text-ink-2 col-start-2 row-start-2 line-clamp-2 text-sm">
                         {p.excerpt}
                       </p>
                     )}

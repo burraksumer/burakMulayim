@@ -19,8 +19,8 @@ const social = [
   <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
     <!-- Identity -->
     <section class="mb-16">
-      <h1 class="font-serif text-3xl tracking-tight text-[var(--color-ink-1)]">Burak Sümer</h1>
-      <p class="mt-3 max-w-prose text-[15px] leading-relaxed text-[var(--color-ink-2)]">
+      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Burak Sümer</h1>
+      <p class="text-ink-2 mt-3 max-w-prose text-[15px] leading-relaxed">
         Software engineer, building things in Istanbul. I write about minimal software, the web, and
         whatever else I'm thinking through.
       </p>
@@ -28,12 +28,10 @@ const social = [
 
     <!-- Latest writing -->
     <section class="mb-16">
-      <h2 class="mb-6 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-3)] uppercase">
-        Writing
-      </h2>
+      <h2 class="text-ink-3 mb-6 font-mono text-xs tracking-[0.2em] uppercase">Writing</h2>
       {
         recentPosts.length === 0 ? (
-          <p class="text-sm text-[var(--color-ink-3)]">No posts loaded.</p>
+          <p class="text-ink-3 text-sm">No posts loaded.</p>
         ) : (
           <ul class="space-y-6">
             {recentPosts.map((p) => (
@@ -43,16 +41,16 @@ const social = [
                   class="group grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-1"
                 >
                   <time
-                    class="row-start-1 pt-[3px] font-mono text-xs text-[var(--color-ink-3)] tabular-nums"
+                    class="text-ink-3 row-start-1 pt-0.75 font-mono text-xs tabular-nums"
                     datetime={p.date}
                   >
                     {fmtDate(p.date)}
                   </time>
-                  <h3 class="row-start-1 font-serif text-lg text-[var(--color-ink-1)] group-hover:text-[var(--color-ink-accent)]">
+                  <h3 class="text-ink-1 group-hover:text-ink-accent row-start-1 font-serif text-lg">
                     {p.title}
                   </h3>
                   {p.excerpt && (
-                    <p class="col-start-2 row-start-2 line-clamp-2 text-sm text-[var(--color-ink-2)]">
+                    <p class="text-ink-2 col-start-2 row-start-2 line-clamp-2 text-sm">
                       {p.excerpt}
                     </p>
                   )}
@@ -64,13 +62,10 @@ const social = [
       }
       <a
         href="/posts"
-        class="group/link mt-6 inline-block font-mono text-xs text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]"
+        class="group/link text-ink-3 hover:text-ink-1 mt-6 inline-block font-mono text-xs"
       >
         all posts
-        <span
-          class="ml-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
-          aria-hidden="true">→</span
-        >
+        <span class="text-ink-3 group-hover/link:text-ink-accent ml-1" aria-hidden="true">→</span>
       </a>
     </section>
 
@@ -78,37 +73,33 @@ const social = [
     {
       (nowTrack || now) && (
         <section class="mb-16">
-          <h2 class="mb-6 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-3)] uppercase">
-            Currently
-          </h2>
+          <h2 class="text-ink-3 mb-6 font-mono text-xs tracking-[0.2em] uppercase">Currently</h2>
           <div class="grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-3">
             {nowTrack && (
               <>
-                <span class="row-start-1 inline-flex items-center gap-2 pt-[3px] font-mono text-xs whitespace-nowrap tabular-nums">
+                <span class="row-start-1 inline-flex items-center gap-2 pt-0.75 font-mono text-xs whitespace-nowrap tabular-nums">
                   {nowTrack.now_playing ? (
                     <>
                       <span class="relative inline-flex h-1.5 w-1.5">
                         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                         <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
                       </span>
-                      <span class="text-[var(--color-ink-1)]">now</span>
+                      <span class="text-ink-1">now</span>
                     </>
                   ) : (
-                    <span class="text-[var(--color-ink-3)]">
-                      {relativeTime(nowTrack.played_at)}
-                    </span>
+                    <span class="text-ink-3">{relativeTime(nowTrack.played_at)}</span>
                   )}
                 </span>
                 <a
                   href={nowTrack.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="group/link row-start-1 text-[15px] text-[var(--color-ink-2)] hover:text-[var(--color-ink-1)]"
+                  class="group/link text-ink-2 hover:text-ink-1 row-start-1 text-[15px]"
                 >
                   <span class="font-serif italic">{nowTrack.name}</span>
                   <span> — {nowTrack.artist}</span>
                   <span
-                    class="ml-1 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+                    class="text-ink-3 group-hover/link:text-ink-accent ml-1 align-super font-mono text-[10px]"
                     aria-hidden="true"
                   >
                     ↗
@@ -118,16 +109,16 @@ const social = [
             )}
             {now?.headline && (
               <>
-                <span class="row-start-2 pt-[3px] font-mono text-xs whitespace-nowrap text-[var(--color-ink-3)] tabular-nums">
+                <span class="text-ink-3 row-start-2 pt-0.75 font-mono text-xs whitespace-nowrap tabular-nums">
                   {relativeTime(now.last_modified)}
                 </span>
                 <a
                   href="/now"
-                  class="group/link row-start-2 text-[15px] text-[var(--color-ink-2)] hover:text-[var(--color-ink-1)]"
+                  class="group/link text-ink-2 hover:text-ink-1 row-start-2 text-[15px]"
                 >
                   <span class="font-serif italic">{now.headline}</span>
                   <span
-                    class="ml-1 font-mono text-xs text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+                    class="text-ink-3 group-hover/link:text-ink-accent ml-1 font-mono text-xs"
                     aria-hidden="true"
                   >
                     →
@@ -142,9 +133,7 @@ const social = [
 
     <!-- Elsewhere -->
     <section class="mb-16">
-      <h2 class="mb-6 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-3)] uppercase">
-        Elsewhere
-      </h2>
+      <h2 class="text-ink-3 mb-6 font-mono text-xs tracking-[0.2em] uppercase">Elsewhere</h2>
       <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
         {
           social.map((s) => {
@@ -155,11 +144,11 @@ const social = [
                   href={s.href}
                   target={isHttp ? "_blank" : undefined}
                   rel={isHttp ? "noopener noreferrer" : undefined}
-                  class="group/link text-[var(--color-ink-2)] hover:text-[var(--color-ink-1)]"
+                  class="group/link text-ink-2 hover:text-ink-1"
                 >
                   {s.label}
                   <span
-                    class="ml-0.5 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+                    class="text-ink-3 group-hover/link:text-ink-accent ml-0.5 align-super font-mono text-[10px]"
                     aria-hidden="true"
                   >
                     ↗

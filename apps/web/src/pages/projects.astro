@@ -23,18 +23,15 @@ const projects: Project[] = [
 <Layout title="Projects — Burak Sümer" description="Things I've built.">
   <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
     <nav class="mb-12 font-mono text-xs">
-      <a href="/" class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]">
-        <span
-          class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
-          aria-hidden="true">←</span
-        >
+      <a href="/" class="group/link text-ink-3 hover:text-ink-1">
+        <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
         home
       </a>
     </nav>
 
     <header class="mb-16">
-      <h1 class="font-serif text-3xl tracking-tight text-[var(--color-ink-1)]">Projects</h1>
-      <p class="mt-3 text-[var(--color-ink-2)]">Things I've built that are still alive.</p>
+      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Projects</h1>
+      <p class="text-ink-2 mt-3">Things I've built that are still alive.</p>
     </header>
 
     <ul class="space-y-10">
@@ -50,11 +47,11 @@ const projects: Project[] = [
                 rel={isExternal ? "noopener noreferrer" : undefined}
                 class="group/link block"
               >
-                <h2 class="font-serif text-xl text-[var(--color-ink-1)] group-hover/link:text-[var(--color-ink-accent)]">
+                <h2 class="text-ink-1 group-hover/link:text-ink-accent font-serif text-xl">
                   {p.name}
                   {isExternal && (
                     <span
-                      class="ml-1 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+                      class="text-ink-3 group-hover/link:text-ink-accent ml-1 align-super font-mono text-[10px]"
                       aria-hidden="true"
                     >
                       ↗
@@ -62,13 +59,11 @@ const projects: Project[] = [
                   )}
                 </h2>
                 {p.tag && (
-                  <p class="mt-1 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-3)] uppercase">
+                  <p class="text-ink-3 mt-1 font-mono text-xs tracking-[0.2em] uppercase">
                     {p.tag}
                   </p>
                 )}
-                <p class="mt-3 text-[15px] leading-relaxed text-[var(--color-ink-2)]">
-                  {p.description}
-                </p>
+                <p class="text-ink-2 mt-3 text-[15px] leading-relaxed">{p.description}</p>
               </Wrapper>
             </li>
           );
