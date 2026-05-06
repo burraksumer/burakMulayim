@@ -1,0 +1,82 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+interface Project {
+  name: string;
+  href?: string;
+  description: string;
+  tag?: string;
+}
+
+const projects: Project[] = [
+  {
+    name: "burak.mulayim.app",
+    href: "https://github.com/burraksumer/burakMulayim",
+    description:
+      "This site. Bun + Elysia API serving markdown posts; Astro frontend running on Bun. Designed to stay under 100KB per page.",
+    tag: "open source",
+  },
+  // Add more as they happen. Keep the list short — quality over quantity.
+];
+---
+
+<Layout title="Projects — Burak Sümer" description="Things I've built.">
+  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
+    <nav class="mb-12 font-mono text-xs">
+      <a
+        href="/"
+        class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]"
+      >
+        <span
+          class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+          aria-hidden="true">←</span
+        >
+        home
+      </a>
+    </nav>
+
+    <header class="mb-16">
+      <h1 class="font-serif text-3xl tracking-tight text-[var(--color-ink-1)]">Projects</h1>
+      <p class="mt-3 text-[var(--color-ink-2)]">Things I've built that are still alive.</p>
+    </header>
+
+    <ul class="space-y-10">
+      {
+        projects.map((p) => {
+          const isExternal = p.href?.startsWith("http") ?? false;
+          const Wrapper = p.href ? "a" : "div";
+          return (
+            <li>
+              <Wrapper
+                href={p.href}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                class="group/link block"
+              >
+                <h2 class="font-serif text-xl text-[var(--color-ink-1)] group-hover/link:text-[var(--color-ink-accent)]">
+                  {p.name}
+                  {isExternal && (
+                    <span
+                      class="ml-1 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+                      aria-hidden="true"
+                    >
+                      ↗
+                    </span>
+                  )}
+                </h2>
+                {p.tag && (
+                  <p class="mt-1 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-3)] uppercase">
+                    {p.tag}
+                  </p>
+                )}
+                <p class="mt-3 text-[15px] leading-relaxed text-[var(--color-ink-2)]">
+                  {p.description}
+                </p>
+              </Wrapper>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </main>
+</Layout>

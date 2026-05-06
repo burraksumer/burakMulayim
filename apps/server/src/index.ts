@@ -1,4 +1,4 @@
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 
 import { createDb } from "@burakMulayim/db";
 import { env } from "@burakMulayim/env/server";
@@ -19,6 +19,7 @@ async function main() {
 
   const store = new PostStore(db);
   const postsDir = resolve(process.cwd(), env.POSTS_DIR);
+  const contentDir = dirname(postsDir);
   const posts = await loadPosts({ dir: postsDir });
   store.setAll(posts);
   console.log(`[posts] loaded ${posts.length} posts from ${postsDir}`);
@@ -29,6 +30,7 @@ async function main() {
   const app = buildApp({
     db,
     store,
+    contentDir,
     corsOrigin: env.CORS_ORIGIN,
     carbonTtlMs: CARBON_TTL_MS,
     lastfmTtlMs: LASTFM_TTL_MS,

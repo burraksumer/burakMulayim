@@ -31,6 +31,7 @@ const buildTestApp = (origin: string | string[]) =>
     db,
     store,
     site: SITE,
+    contentDir: FIXTURES, // /now route uses this; tests don't hit it directly
     corsOrigin: origin,
     carbonTtlMs: 60_000,
     lastfmTtlMs: 60_000,

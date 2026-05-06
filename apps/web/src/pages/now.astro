@@ -1,0 +1,125 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { api, fmtLongDate } from "../lib/api";
+import { marked } from "marked";
+
+const now = await api.now();
+const bodyHtml = now ? await marked.parse(now.body) : null;
+---
+
+<Layout title="Now — Burak Sümer" description="What I'm currently focused on.">
+  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
+    <nav class="mb-12 font-mono text-xs">
+      <a
+        href="/"
+        class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]"
+      >
+        <span
+          class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+          aria-hidden="true">←</span
+        >
+        home
+      </a>
+    </nav>
+
+    <header class="mb-12">
+      <h1 class="font-serif text-3xl tracking-tight text-[var(--color-ink-1)]">Now</h1>
+      <p class="mt-3 text-[var(--color-ink-2)]">What I'm focused on this month.</p>
+    </header>
+
+    {
+      now ? (
+        <div class="post-body" set:html={bodyHtml ?? ""} />
+      ) : (
+        <p class="text-[var(--color-ink-3)]">Now page unavailable.</p>
+      )
+    }
+
+    {
+      now && (
+        <footer class="mt-12 border-t border-[var(--color-ink-rule)] pt-6 font-mono text-xs text-[var(--color-ink-3)]">
+          Last updated{" "}
+          <time datetime={now.last_modified}>{fmtLongDate(now.last_modified)}</time>
+          <span class="mx-2 text-[var(--color-ink-rule)]">·</span>
+          <a
+            href="https://nownownow.com/about"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group/link hover:text-[var(--color-ink-1)]"
+          >
+            nownownow.com
+            <span
+              class="ml-0.5 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+              aria-hidden="true"
+            >
+              ↗
+            </span>
+          </a>
+        </footer>
+      )
+    }
+  </main>
+</Layout>
+
+<style>
+  /* Mirrors apps/web/src/pages/posts/[slug].astro — same editorial markdown
+     treatment so /now and /posts/:slug feel like one design system. */
+  .post-body {
+    color: var(--color-ink-1);
+    line-height: 1.7;
+  }
+  .post-body :global(p),
+  .post-body :global(ul),
+  .post-body :global(ol),
+  .post-body :global(blockquote),
+  .post-body :global(pre) {
+    margin: 0 0 1.25em;
+  }
+  .post-body :global(h2),
+  .post-body :global(h3) {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    color: var(--color-ink-1);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin: 1.75em 0 0.6em;
+  }
+  .post-body :global(h2) {
+    font-size: 1.25rem;
+  }
+  .post-body :global(h3) {
+    font-size: 1.05rem;
+  }
+  .post-body :global(a) {
+    color: var(--color-ink-1);
+    text-decoration: underline;
+    text-decoration-color: var(--color-ink-3);
+    text-underline-offset: 3px;
+  }
+  .post-body :global(a:hover) {
+    text-decoration-color: var(--color-ink-accent);
+    color: var(--color-ink-accent);
+  }
+  .post-body :global(strong) {
+    color: var(--color-ink-1);
+    font-weight: 600;
+  }
+  .post-body :global(em) {
+    font-style: italic;
+  }
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    padding-left: 1.5em;
+  }
+  .post-body :global(li) {
+    margin-bottom: 0.4em;
+  }
+  .post-body :global(li::marker) {
+    color: var(--color-ink-3);
+  }
+  .post-body :global(hr) {
+    border: 0;
+    border-top: 1px solid var(--color-ink-rule);
+    margin: 2.5em 0;
+  }
+</style>

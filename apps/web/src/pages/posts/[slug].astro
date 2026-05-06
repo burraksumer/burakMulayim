@@ -1,0 +1,217 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { api, fmtLongDate } from "../../lib/api";
+import { marked } from "marked";
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect("/posts");
+
+const post = await api.post(slug);
+if (!post) {
+  return new Response("Not found", { status: 404 });
+}
+
+// Configure marked: GitHub-flavored markdown, no smart-everything quirks.
+marked.setOptions({
+  gfm: true,
+  breaks: false,
+});
+
+const bodyHtml = await marked.parse(post.body);
+---
+
+<Layout
+  title={`${post.title} — Burak Sümer`}
+  description={post.description ?? post.excerpt}
+>
+  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
+    <!-- Breadcrumb -->
+    <nav class="mb-12 font-mono text-xs">
+      <a
+        href="/posts"
+        class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]"
+      >
+        <span
+          class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+          aria-hidden="true">←</span
+        >
+        writing
+      </a>
+    </nav>
+
+    <article>
+      <!-- Title -->
+      <header class="mb-12">
+        <h1
+          class="font-serif text-4xl leading-tight tracking-tight text-balance text-[var(--color-ink-1)]"
+        >
+          {post.title}
+        </h1>
+        <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+          <time
+            class="font-mono text-xs text-[var(--color-ink-3)] tabular-nums"
+            datetime={post.date}
+          >
+            {fmtLongDate(post.date)}
+          </time>
+          <span
+            class="font-mono text-xs text-[var(--color-ink-3)] tabular-nums"
+          >
+            {post.reading_time} min
+          </span>
+          {
+            post.tags.length > 0 && (
+              <ul class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs">
+                {post.tags.map((tag) => (
+                  <li>
+                    <a
+                      href={`/tags/${encodeURIComponent(tag)}`}
+                      class="text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]"
+                    >
+                      {tag}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )
+          }
+        </div>
+      </header>
+
+      <!-- Body -->
+      <div class="post-body" set:html={bodyHtml} />
+
+      <!-- Footer / nav back -->
+      <footer
+        class="mt-20 border-t border-[var(--color-ink-rule)] pt-8 font-mono text-xs"
+      >
+        <a
+          href="/posts"
+          class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]"
+        >
+          <span
+            class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+            aria-hidden="true">←</span
+          >
+          back to writing
+        </a>
+      </footer>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  /* Typography for the rendered markdown body. Mirrors the page's
+     editorial palette: serif body + sans body fallback, mono for code,
+     warm grays, restrained spacing. Hand-tuned (no @tailwindcss/typography)
+     to keep weight low and styling under our control. */
+  .post-body {
+    color: var(--color-ink-1);
+    line-height: 1.7;
+  }
+
+  .post-body :global(p),
+  .post-body :global(ul),
+  .post-body :global(ol),
+  .post-body :global(blockquote),
+  .post-body :global(pre),
+  .post-body :global(table) {
+    margin: 0 0 1.25em;
+  }
+
+  .post-body :global(h1),
+  .post-body :global(h2),
+  .post-body :global(h3),
+  .post-body :global(h4) {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    color: var(--color-ink-1);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin: 2em 0 0.6em;
+  }
+  .post-body :global(h1) {
+    font-size: 1.75rem;
+  }
+  .post-body :global(h2) {
+    font-size: 1.4rem;
+  }
+  .post-body :global(h3) {
+    font-size: 1.15rem;
+  }
+
+  .post-body :global(a) {
+    color: var(--color-ink-1);
+    text-decoration: underline;
+    text-decoration-color: var(--color-ink-3);
+    text-underline-offset: 3px;
+  }
+  .post-body :global(a:hover) {
+    text-decoration-color: var(--color-ink-accent);
+    color: var(--color-ink-accent);
+  }
+
+  .post-body :global(strong) {
+    color: var(--color-ink-1);
+    font-weight: 600;
+  }
+
+  .post-body :global(em) {
+    font-style: italic;
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    padding-left: 1.5em;
+  }
+  .post-body :global(li) {
+    margin-bottom: 0.4em;
+  }
+  .post-body :global(li::marker) {
+    color: var(--color-ink-3);
+  }
+
+  .post-body :global(blockquote) {
+    border-left: 2px solid var(--color-ink-rule);
+    padding-left: 1.25em;
+    color: var(--color-ink-2);
+    font-style: italic;
+  }
+
+  .post-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-ink-rule);
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    color: var(--color-ink-1);
+  }
+
+  .post-body :global(pre) {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-ink-rule);
+    padding: 1em 1.25em;
+    border-radius: 4px;
+    overflow-x: auto;
+    line-height: 1.6;
+  }
+  .post-body :global(pre code) {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .post-body :global(hr) {
+    border: 0;
+    border-top: 1px solid var(--color-ink-rule);
+    margin: 2.5em 0;
+  }
+
+  .post-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 1.5em 0;
+  }
+</style>
