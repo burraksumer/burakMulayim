@@ -1,8 +1,48 @@
 @import "tailwindcss";
 
-/* Add your theme customizations here. */
-/* See the TailwindCSS v4 docs for more info: https://tailwindcss.com/docs/v4-beta */
-
+/* Typography: a serif for headings (personality), sans for body (clarity),
+   mono for technical bits (dates, code, metadata). All system stacks — zero
+   asset weight. Swap any of these for a webfont later by editing the var. */
 @theme {
-  --font-sans: "Inter", sans-serif;
+  --font-serif:
+    ui-serif, Georgia, "Iowan Old Style", "Charter", "New York", "Apple Garamond", serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Inter", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  /* Warm-leaning dark palette — not pure neutrals, a touch of amber.
+     Reads as paper-by-candlelight rather than terminal. */
+  --color-ink-bg: #0c0b0a;
+  --color-ink-1: #e8e2d4; /* primary text */
+  --color-ink-2: #9c9486; /* secondary */
+  --color-ink-3: #54504a; /* dim */
+  --color-ink-rule: #1f1c18;
+  --color-ink-accent: #d6a86e; /* warm amber, used sparingly on hover */
+}
+
+html {
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "kern";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--color-ink-bg);
+  color: var(--color-ink-1);
+}
+
+/* Serif gets a slight optical adjustment so it doesn't feel oversized
+   next to the sans body. */
+.font-serif {
+  letter-spacing: -0.01em;
+}
+
+/* Smooth color transitions for any text inside a link — covers `group-hover`
+   children (post titles, dates, external-link arrows) as well as direct
+   color shifts on the anchor itself. */
+a,
+a * {
+  transition:
+    color 120ms ease-out,
+    border-color 120ms ease-out;
 }
