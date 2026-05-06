@@ -1,6 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { api, fmtDate, type PostMeta } from "../../lib/api";
+import BackNav from "../../components/BackNav.astro";
+import PageMain from "../../components/PageMain.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PostListItem from "../../components/PostListItem.astro";
+import SectionLabel from "../../components/SectionLabel.astro";
+import { api, type PostMeta } from "../../lib/api";
 
 const posts = (await api.posts()) ?? [];
 
@@ -12,26 +17,16 @@ for (const p of posts) {
   byYear.get(year)!.push(p);
 }
 const years = Array.from(byYear.keys());
+
+const description = posts.length
+  ? `${posts.length} ${posts.length === 1 ? "post" : "posts"}, oldest 2022. Long reads, short letters, technical notes.`
+  : undefined;
 ---
 
 <Layout title="Writing — Burak Sümer" description="All posts.">
-  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
-    <!-- Breadcrumb / back -->
-    <nav class="mb-12 font-mono text-xs">
-      <a href="/" class="group/link text-ink-3 hover:text-ink-1">
-        <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
-        home
-      </a>
-    </nav>
-
-    <header class="mb-16">
-      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Writing</h1>
-      <p class="text-ink-2 mt-3">
-        {posts.length}
-        {posts.length === 1 ? "post" : "posts"}, oldest 2022. Long reads, short letters, technical
-        notes.
-      </p>
-    </header>
+  <PageMain>
+    <BackNav href="/" label="home" />
+    <PageHeader title="Writing" description={description} class="mb-16" />
 
     {
       posts.length === 0 ? (
@@ -39,29 +34,11 @@ const years = Array.from(byYear.keys());
       ) : (
         years.map((year) => (
           <section class="mb-12">
-            <h2 class="text-ink-3 mb-6 font-mono text-xs tracking-[0.2em] uppercase">{year}</h2>
+            <SectionLabel class="mb-6">{year}</SectionLabel>
             <ul class="space-y-6">
               {byYear.get(year)!.map((p) => (
                 <li>
-                  <a
-                    href={`/posts/${p.slug}`}
-                    class="group grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-1"
-                  >
-                    <time
-                      class="text-ink-3 row-start-1 pt-0.75 font-mono text-xs tabular-nums"
-                      datetime={p.date}
-                    >
-                      {fmtDate(p.date)}
-                    </time>
-                    <h3 class="text-ink-1 group-hover:text-ink-accent row-start-1 font-serif text-lg">
-                      {p.title}
-                    </h3>
-                    {p.excerpt && (
-                      <p class="text-ink-2 col-start-2 row-start-2 line-clamp-2 text-sm">
-                        {p.excerpt}
-                      </p>
-                    )}
-                  </a>
+                  <PostListItem post={p} />
                 </li>
               ))}
             </ul>
@@ -69,5 +46,5 @@ const years = Array.from(byYear.keys());
         ))
       )
     }
-  </main>
+  </PageMain>
 </Layout>

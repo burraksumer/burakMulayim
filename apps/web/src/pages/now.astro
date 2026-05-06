@@ -1,5 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import BackNav from "../components/BackNav.astro";
+import ExternalLink from "../components/ExternalLink.astro";
+import MarkdownBody from "../components/MarkdownBody.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageMain from "../components/PageMain.astro";
 import { api, fmtLongDate } from "../lib/api";
 import { marked } from "marked";
 
@@ -8,16 +13,9 @@ const bodyHtml = now ? await marked.parse(now.body) : null;
 ---
 
 <Layout title="Now — Burak Sümer" description="What I'm currently focused on.">
-  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
-    <nav class="mb-12 font-mono text-xs">
-      <a href="/" class="group/link text-ink-3 hover:text-ink-1">
-        <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
-        home
-      </a>
-    </nav>
-
-    <header class="mb-12">
-      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Now</h1>
+  <PageMain>
+    <BackNav href="/" label="home" />
+    <PageHeader title="Now">
       {
         now && (
           <div class="text-ink-3 mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs">
@@ -28,94 +26,14 @@ const bodyHtml = now ? await marked.parse(now.body) : null;
               </time>
             </span>
             <span aria-hidden="true">·</span>
-            <a
-              href="https://nownownow.com/about"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group/link hover:text-ink-1"
-            >
+            <ExternalLink href="https://nownownow.com/about" class="hover:text-ink-1">
               nownownow.com
-              <span
-                class="text-ink-3 group-hover/link:text-ink-accent ml-0.5 align-super font-mono text-[10px]"
-                aria-hidden="true"
-              >
-                ↗
-              </span>
-            </a>
+            </ExternalLink>
           </div>
         )
       }
-    </header>
+    </PageHeader>
 
-    {
-      now ? (
-        <div class="post-body" set:html={bodyHtml ?? ""} />
-      ) : (
-        <p class="text-ink-3">Now page unavailable.</p>
-      )
-    }
-  </main>
+    {now ? <MarkdownBody html={bodyHtml ?? ""} /> : <p class="text-ink-3">Now page unavailable.</p>}
+  </PageMain>
 </Layout>
-
-<style>
-  /* Mirrors apps/web/src/pages/posts/[slug].astro — same editorial markdown
-     treatment so /now and /posts/:slug feel like one design system. */
-  .post-body {
-    color: var(--color-ink-1);
-    line-height: 1.7;
-  }
-  .post-body :global(p),
-  .post-body :global(ul),
-  .post-body :global(ol),
-  .post-body :global(blockquote),
-  .post-body :global(pre) {
-    margin: 0 0 1.25em;
-  }
-  .post-body :global(h2),
-  .post-body :global(h3) {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    color: var(--color-ink-1);
-    letter-spacing: -0.01em;
-    line-height: 1.25;
-    margin: 1.75em 0 0.6em;
-  }
-  .post-body :global(h2) {
-    font-size: 1.25rem;
-  }
-  .post-body :global(h3) {
-    font-size: 1.05rem;
-  }
-  .post-body :global(a) {
-    color: var(--color-ink-1);
-    text-decoration: underline;
-    text-decoration-color: var(--color-ink-3);
-    text-underline-offset: 3px;
-  }
-  .post-body :global(a:hover) {
-    text-decoration-color: var(--color-ink-accent);
-    color: var(--color-ink-accent);
-  }
-  .post-body :global(strong) {
-    color: var(--color-ink-1);
-    font-weight: 600;
-  }
-  .post-body :global(em) {
-    font-style: italic;
-  }
-  .post-body :global(ul),
-  .post-body :global(ol) {
-    padding-left: 1.5em;
-  }
-  .post-body :global(li) {
-    margin-bottom: 0.4em;
-  }
-  .post-body :global(li::marker) {
-    color: var(--color-ink-3);
-  }
-  .post-body :global(hr) {
-    border: 0;
-    border-top: 1px solid var(--color-ink-rule);
-    margin: 2.5em 0;
-  }
-</style>

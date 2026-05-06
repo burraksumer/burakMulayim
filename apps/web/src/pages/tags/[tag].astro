@@ -1,61 +1,42 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { api, fmtDate } from "../../lib/api";
+import BackNav from "../../components/BackNav.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PageMain from "../../components/PageMain.astro";
+import PostListItem from "../../components/PostListItem.astro";
+import SectionLabel from "../../components/SectionLabel.astro";
+import { api } from "../../lib/api";
 import { canonicalTagPath } from "@burakmulayim/shared";
 
 const { tag } = Astro.params;
 if (!tag) return Astro.redirect("/tags");
 
 const result = await api.tag(tag);
-if (!result) {
-  return Astro.rewrite("/404");
-}
+if (!result) return Astro.rewrite("/404");
 
 // Canonical-URL redirect: if the URL slug isn't the canonical form,
 // 301 to the lowercase slug. SEO + clean shareable URLs.
 const redirectPath = canonicalTagPath(decodeURIComponent(tag), result.slug);
 if (redirectPath) return Astro.redirect(redirectPath, 301);
+
+const description = `${result.posts.length} ${result.posts.length === 1 ? "post" : "posts"}.`;
 ---
 
 <Layout title={`#${result.tag} — Burak Sümer`} description={`Posts tagged ${result.tag}.`}>
-  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
-    <nav class="mb-12 font-mono text-xs">
-      <a href="/tags" class="group/link text-ink-3 hover:text-ink-1">
-        <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
-        tags
-      </a>
-    </nav>
-
-    <header class="mb-16">
-      <p class="text-ink-3 mb-2 font-mono text-xs tracking-[0.2em] uppercase">Tag</p>
-      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">{result.tag}</h1>
-      <p class="text-ink-2 mt-3">
-        {result.posts.length}
-        {result.posts.length === 1 ? "post" : "posts"}.
-      </p>
-    </header>
+  <PageMain>
+    <BackNav href="/tags" label="tags" />
+    <PageHeader title={result.tag} description={description} class="mb-16">
+      <SectionLabel as="p" slot="eyebrow" class="mb-2">Tag</SectionLabel>
+    </PageHeader>
 
     <ul class="space-y-6">
       {
         result.posts.map((p) => (
           <li>
-            <a href={`/posts/${p.slug}`} class="group grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-1">
-              <time
-                class="text-ink-3 row-start-1 pt-0.75 font-mono text-xs tabular-nums"
-                datetime={p.date}
-              >
-                {fmtDate(p.date)}
-              </time>
-              <h3 class="text-ink-1 group-hover:text-ink-accent row-start-1 font-serif text-lg">
-                {p.title}
-              </h3>
-              {p.excerpt && (
-                <p class="text-ink-2 col-start-2 row-start-2 line-clamp-2 text-sm">{p.excerpt}</p>
-              )}
-            </a>
+            <PostListItem post={p} />
           </li>
         ))
       }
     </ul>
-  </main>
+  </PageMain>
 </Layout>

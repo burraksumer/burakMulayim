@@ -1,19 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import BackNav from "../components/BackNav.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageMain from "../components/PageMain.astro";
 ---
 
 <Layout title="About — Burak Sümer" description="About Burak.">
-  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
-    <nav class="mb-12 font-mono text-xs">
-      <a href="/" class="group/link text-ink-3 hover:text-ink-1">
-        <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
-        home
-      </a>
-    </nav>
-
-    <header class="mb-12">
-      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">About</h1>
-    </header>
+  <PageMain>
+    <BackNav href="/" label="home" />
+    <PageHeader title="About" />
 
     <div class="text-ink-1 space-y-5 text-[15px] leading-relaxed">
       <p>
@@ -29,12 +24,12 @@ import Layout from "../layouts/Layout.astro";
           rel="noopener noreferrer"
           class="text-ink-1 decoration-ink-3 hover:decoration-ink-accent underline underline-offset-[3px]"
         >
-          GitHub
-        </a>.
+          GitHub</a
+        >.
       </p>
       <p class="text-ink-2">
         Best way to reach me is email or twitter, both linked from the homepage.
       </p>
     </div>
-  </main>
+  </PageMain>
 </Layout>

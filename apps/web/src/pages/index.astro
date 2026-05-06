@@ -1,22 +1,27 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { api, fmtDate, relativeTime } from "../lib/api";
+import ExternalLink from "../components/ExternalLink.astro";
+import InternalLink from "../components/InternalLink.astro";
+import PageMain from "../components/PageMain.astro";
+import PostListItem from "../components/PostListItem.astro";
+import SectionLabel from "../components/SectionLabel.astro";
+import { api, relativeTime } from "../lib/api";
 
 const [posts, lastfm, now] = await Promise.all([api.posts(), api.lastfm(), api.now()]);
 
 const recentPosts = (posts ?? []).slice(0, 2);
 const nowTrack = lastfm?.tracks.find((t) => t.now_playing) ?? lastfm?.tracks[0];
 
-const social = [
-  { href: "https://github.com/burraksumer", label: "github" },
-  { href: "https://x.com/burraksumer", label: "twitter" },
-  { href: "https://www.last.fm/user/buraksumer13", label: "last.fm" },
-  { href: "mailto:burak@stationwise.com", label: "email" },
+const social: { href: string; label: string; external: boolean }[] = [
+  { href: "https://github.com/burraksumer", label: "github", external: true },
+  { href: "https://x.com/burraksumer", label: "twitter", external: true },
+  { href: "https://www.last.fm/user/buraksumer13", label: "last.fm", external: true },
+  { href: "mailto:burak@stationwise.com", label: "email", external: false },
 ];
 ---
 
 <Layout>
-  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
+  <PageMain>
     <!-- Identity -->
     <section class="mb-16">
       <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Burak Sümer</h1>
@@ -28,7 +33,7 @@ const social = [
 
     <!-- Latest writing -->
     <section class="mb-16">
-      <h2 class="text-ink-3 mb-6 font-mono text-xs tracking-[0.2em] uppercase">Writing</h2>
+      <SectionLabel class="mb-6">Writing</SectionLabel>
       {
         recentPosts.length === 0 ? (
           <p class="text-ink-3 text-sm">No posts loaded.</p>
@@ -36,44 +41,25 @@ const social = [
           <ul class="space-y-6">
             {recentPosts.map((p) => (
               <li>
-                <a
-                  href={`/posts/${p.slug}`}
-                  class="group grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-1"
-                >
-                  <time
-                    class="text-ink-3 row-start-1 pt-0.75 font-mono text-xs tabular-nums"
-                    datetime={p.date}
-                  >
-                    {fmtDate(p.date)}
-                  </time>
-                  <h3 class="text-ink-1 group-hover:text-ink-accent row-start-1 font-serif text-lg">
-                    {p.title}
-                  </h3>
-                  {p.excerpt && (
-                    <p class="text-ink-2 col-start-2 row-start-2 line-clamp-2 text-sm">
-                      {p.excerpt}
-                    </p>
-                  )}
-                </a>
+                <PostListItem post={p} />
               </li>
             ))}
           </ul>
         )
       }
-      <a
+      <InternalLink
         href="/posts"
-        class="group/link text-ink-3 hover:text-ink-1 mt-6 inline-block font-mono text-xs"
+        class="text-ink-3 hover:text-ink-1 mt-6 inline-block font-mono text-xs"
       >
         all posts
-        <span class="text-ink-3 group-hover/link:text-ink-accent ml-1" aria-hidden="true">→</span>
-      </a>
+      </InternalLink>
     </section>
 
     <!-- Currently -->
     {
       (nowTrack || now) && (
         <section class="mb-16">
-          <h2 class="text-ink-3 mb-6 font-mono text-xs tracking-[0.2em] uppercase">Currently</h2>
+          <SectionLabel class="mb-6">Currently</SectionLabel>
           <div class="grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-3">
             {nowTrack && (
               <>
@@ -90,21 +76,13 @@ const social = [
                     <span class="text-ink-3">{relativeTime(nowTrack.played_at)}</span>
                   )}
                 </span>
-                <a
+                <ExternalLink
                   href={nowTrack.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="group/link text-ink-2 hover:text-ink-1 row-start-1 text-[15px]"
+                  class="text-ink-2 hover:text-ink-1 row-start-1 text-[15px]"
                 >
                   <span class="font-serif italic">{nowTrack.name}</span>
                   <span> — {nowTrack.artist}</span>
-                  <span
-                    class="text-ink-3 group-hover/link:text-ink-accent ml-1 align-super font-mono text-[10px]"
-                    aria-hidden="true"
-                  >
-                    ↗
-                  </span>
-                </a>
+                </ExternalLink>
               </>
             )}
             {now?.headline && (
@@ -112,18 +90,12 @@ const social = [
                 <span class="text-ink-3 row-start-2 pt-0.75 font-mono text-xs whitespace-nowrap tabular-nums">
                   {relativeTime(now.last_modified)}
                 </span>
-                <a
+                <InternalLink
                   href="/now"
-                  class="group/link text-ink-2 hover:text-ink-1 row-start-2 text-[15px]"
+                  class="text-ink-2 hover:text-ink-1 row-start-2 text-[15px]"
                 >
                   <span class="font-serif italic">{now.headline}</span>
-                  <span
-                    class="text-ink-3 group-hover/link:text-ink-accent ml-1 font-mono text-xs"
-                    aria-hidden="true"
-                  >
-                    →
-                  </span>
-                </a>
+                </InternalLink>
               </>
             )}
           </div>
@@ -133,19 +105,19 @@ const social = [
 
     <!-- Elsewhere -->
     <section class="mb-16">
-      <h2 class="text-ink-3 mb-6 font-mono text-xs tracking-[0.2em] uppercase">Elsewhere</h2>
+      <SectionLabel class="mb-6">Elsewhere</SectionLabel>
       <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
         {
-          social.map((s) => {
-            const isHttp = s.href.startsWith("http");
-            return (
+          social.map((s) =>
+            s.external ? (
               <li>
-                <a
-                  href={s.href}
-                  target={isHttp ? "_blank" : undefined}
-                  rel={isHttp ? "noopener noreferrer" : undefined}
-                  class="group/link text-ink-2 hover:text-ink-1"
-                >
+                <ExternalLink href={s.href} class="text-ink-2 hover:text-ink-1">
+                  {s.label}
+                </ExternalLink>
+              </li>
+            ) : (
+              <li>
+                <a href={s.href} class="group/link text-ink-2 hover:text-ink-1">
                   {s.label}
                   <span
                     class="text-ink-3 group-hover/link:text-ink-accent ml-0.5 align-super font-mono text-[10px]"
@@ -155,10 +127,10 @@ const social = [
                   </span>
                 </a>
               </li>
-            );
-          })
+            ),
+          )
         }
       </ul>
     </section>
-  </main>
+  </PageMain>
 </Layout>

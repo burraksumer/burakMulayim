@@ -1,0 +1,20 @@
+---
+/**
+ * Top-of-page breadcrumb back-link. Used on every inner page.
+ * Mono small, dim by default — text brightens to white and the arrow
+ * shifts to amber on hover.
+ */
+interface Props {
+  href: string;
+  label: string;
+}
+
+const { href, label } = Astro.props;
+---
+
+<nav class="mb-12 font-mono text-xs">
+  <a href={href} class="group/link text-ink-3 hover:text-ink-1">
+    <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
+    {label}
+  </a>
+</nav>

@@ -1,0 +1,26 @@
+---
+/**
+ * An anchor that opens in a new tab and gets the canonical superscript "↗"
+ * external-link marker. The arrow shifts to the warm accent on hover.
+ *
+ * Caller controls the link text and its surrounding typography (size, font,
+ * default color) via slot content and the `class` prop. The component only
+ * owns: target/rel, the arrow, and the arrow's hover behavior.
+ */
+interface Props {
+  href: string;
+  class?: string;
+}
+
+const { href, class: className } = Astro.props;
+---
+
+<a href={href} target="_blank" rel="noopener noreferrer" class:list={["group/link", className]}>
+  <slot />
+  <span
+    class="text-ink-3 group-hover/link:text-ink-accent ml-0.5 align-super font-mono text-[10px]"
+    aria-hidden="true"
+  >
+    ↗
+  </span>
+</a>

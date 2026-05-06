@@ -1,0 +1,20 @@
+---
+/**
+ * Small-caps mono uppercase label — used for section headers (Writing,
+ * Currently, Elsewhere) and for "eyebrow" labels above page titles
+ * (Tag, 404, etc.).
+ *
+ * Default tag is <h2> (semantic section header). Pass `as="p"` for an
+ * eyebrow above an <h1>.
+ */
+interface Props {
+  as?: "h2" | "p" | "span";
+  class?: string;
+}
+
+const { as: Tag = "h2", class: className }: Props = Astro.props;
+---
+
+<Tag class:list={["text-ink-3 font-mono text-xs tracking-[0.2em] uppercase", className]}>
+  <slot />
+</Tag>

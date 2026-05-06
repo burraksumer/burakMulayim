@@ -1,4 +1,5 @@
 ---
+import ExternalLink from "./ExternalLink.astro";
 import { api } from "../lib/api";
 
 // Site-level footer: carbon stat + 512kb.club marker.
@@ -14,34 +15,21 @@ const KB_CLUB_TIER: "green" | "orange" | "blue" = "green";
 <footer
   class="border-ink-rule text-ink-3 mx-auto w-full max-w-2xl border-t px-6 py-8 font-mono text-xs"
 >
-  <div>
-    <p>
-      {
-        carbon ? (
-          <>
-            this page emits ≈ {carbon.gco2e.toFixed(4)}g CO₂ — cleaner than{" "}
-            {Math.round(carbon.cleanerThan * 100)}%
-            <span class="text-ink-2 ml-1">({carbon.rating})</span>
-          </>
-        ) : (
-          <>built lean</>
-        )
-      }
-      <span class="text-ink-rule mx-2">·</span>
-      <a
-        href="https://512kb.club/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group/link hover:text-ink-1"
-      >
-        512kb.club {KB_CLUB_TIER}
-        <span
-          class="text-ink-3 group-hover/link:text-ink-accent ml-0.5 align-super font-mono text-[10px]"
-          aria-hidden="true"
-        >
-          ↗
-        </span>
-      </a>
-    </p>
-  </div>
+  <p>
+    {
+      carbon ? (
+        <>
+          this page emits ≈ {carbon.gco2e.toFixed(4)}g CO₂ — cleaner than{" "}
+          {Math.round(carbon.cleanerThan * 100)}%
+          <span class="text-ink-2 ml-1">({carbon.rating})</span>
+        </>
+      ) : (
+        <>built lean</>
+      )
+    }
+    <span class="text-ink-rule mx-2">·</span>
+    <ExternalLink href="https://512kb.club/" class="hover:text-ink-1">
+      512kb.club {KB_CLUB_TIER}
+    </ExternalLink>
+  </p>
 </footer>

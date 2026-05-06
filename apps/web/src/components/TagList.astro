@@ -1,0 +1,28 @@
+---
+import { slugify } from "@burakmulayim/shared";
+
+/**
+ * Inline list of tag chips — small mono links that wrap. Each chip routes
+ * to the canonical /tags/<slug> URL.
+ */
+interface Props {
+  tags: string[];
+  class?: string;
+}
+
+const { tags, class: className } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <ul class:list={["flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs", className]}>
+      {tags.map((tag) => (
+        <li>
+          <a href={`/tags/${slugify(tag)}`} class="text-ink-3 hover:text-ink-1">
+            {tag}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}

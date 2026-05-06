@@ -1,0 +1,15 @@
+---
+/**
+ * Standard page wrapper — locks column width and vertical rhythm in one
+ * place. Every page uses this; changing site-wide layout is a one-file edit.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<main class:list={["mx-auto w-full max-w-2xl px-6 py-20 sm:py-28", className]}>
+  <slot />
+</main>

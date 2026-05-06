@@ -1,5 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import BackNav from "../components/BackNav.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageMain from "../components/PageMain.astro";
+import SectionLabel from "../components/SectionLabel.astro";
 
 interface Project {
   name: string;
@@ -21,18 +25,13 @@ const projects: Project[] = [
 ---
 
 <Layout title="Projects — Burak Sümer" description="Things I've built.">
-  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
-    <nav class="mb-12 font-mono text-xs">
-      <a href="/" class="group/link text-ink-3 hover:text-ink-1">
-        <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
-        home
-      </a>
-    </nav>
-
-    <header class="mb-16">
-      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Projects</h1>
-      <p class="text-ink-2 mt-3">Things I've built that are still alive.</p>
-    </header>
+  <PageMain>
+    <BackNav href="/" label="home" />
+    <PageHeader
+      title="Projects"
+      description="Things I've built that are still alive."
+      class="mb-16"
+    />
 
     <ul class="space-y-10">
       {
@@ -59,9 +58,9 @@ const projects: Project[] = [
                   )}
                 </h2>
                 {p.tag && (
-                  <p class="text-ink-3 mt-1 font-mono text-xs tracking-[0.2em] uppercase">
+                  <SectionLabel as="p" class="mt-1">
                     {p.tag}
-                  </p>
+                  </SectionLabel>
                 )}
                 <p class="text-ink-2 mt-3 text-[15px] leading-relaxed">{p.description}</p>
               </Wrapper>
@@ -70,5 +69,5 @@ const projects: Project[] = [
         })
       }
     </ul>
-  </main>
+  </PageMain>
 </Layout>

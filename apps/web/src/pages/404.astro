@@ -1,5 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageMain from "../components/PageMain.astro";
+import SectionLabel from "../components/SectionLabel.astro";
 
 interface NavItem {
   href: string;
@@ -14,18 +17,16 @@ const places: NavItem[] = [
   { href: "/about", label: "about" },
   { href: "/projects", label: "projects" },
 ];
+
+const description =
+  "That page either doesn't exist, or moved somewhere else. If you followed a link from outside, sorry — try one of these instead:";
 ---
 
 <Layout title="Not found — Burak Sümer" description="That page doesn't exist.">
-  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
-    <header class="mb-12">
-      <p class="text-ink-3 mb-2 font-mono text-xs tracking-[0.2em] uppercase">404</p>
-      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Not found</h1>
-      <p class="text-ink-2 mt-3">
-        That page either doesn't exist, or moved somewhere else. If you followed a link from
-        outside, sorry — try one of these instead:
-      </p>
-    </header>
+  <PageMain>
+    <PageHeader title="Not found" description={description}>
+      <SectionLabel as="p" slot="eyebrow" class="mb-2">404</SectionLabel>
+    </PageHeader>
 
     <ul class="grid grid-cols-[3rem_1fr] items-baseline gap-x-5 gap-y-4">
       {
@@ -41,5 +42,5 @@ const places: NavItem[] = [
         ))
       }
     </ul>
-  </main>
+  </PageMain>
 </Layout>
