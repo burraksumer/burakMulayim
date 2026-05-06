@@ -8,7 +8,7 @@ if (!tag) return Astro.redirect("/tags");
 
 const result = await api.tag(tag);
 if (!result) {
-  return new Response("Tag not found", { status: 404 });
+  return Astro.rewrite("/404");
 }
 
 // Canonical-URL redirect: if the URL slug isn't the canonical form,
