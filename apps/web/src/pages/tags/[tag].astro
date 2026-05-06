@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import BackNav from "../../components/BackNav.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageMain from "../../components/PageMain.astro";
 import PostList from "../../components/PostList.astro";
@@ -24,7 +24,13 @@ const description = `${result.posts.length} ${result.posts.length === 1 ? "post"
 
 <Layout title={`#${result.tag} — Burak Sümer`} description={`Posts tagged ${result.tag}.`}>
   <PageMain>
-    <BackNav href="/tags" label="tags" />
+    <Breadcrumb
+      trail={[
+        { href: "/", label: "home" },
+        { href: "/tags", label: "tags" },
+        { label: result.tag },
+      ]}
+    />
     <PageHeader title={result.tag} description={description} class="mb-16">
       <SectionLabel as="p" slot="eyebrow" class="mb-2">Tag</SectionLabel>
     </PageHeader>

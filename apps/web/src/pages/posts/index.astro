@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import BackNav from "../../components/BackNav.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
 import PageMain from "../../components/PageMain.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PostList from "../../components/PostList.astro";
@@ -25,7 +25,7 @@ const description = posts.length
 
 <Layout title="Writing — Burak Sümer" description="All posts.">
   <PageMain>
-    <BackNav href="/" label="home" />
+    <Breadcrumb trail={[{ href: "/", label: "home" }, { label: "writing" }]} />
     <PageHeader title="Writing" description={description} class="mb-16" />
 
     {

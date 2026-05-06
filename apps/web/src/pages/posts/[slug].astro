@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import BackNav from "../../components/BackNav.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
 import DateTime from "../../components/DateTime.astro";
 import HeaderMeta from "../../components/HeaderMeta.astro";
 import MarkdownBody from "../../components/MarkdownBody.astro";
@@ -25,7 +25,13 @@ const bodyHtml = await marked.parse(post.body);
 
 <Layout title={`${post.title} — Burak Sümer`} description={post.description ?? post.excerpt}>
   <PageMain>
-    <BackNav href="/posts" label="writing" />
+    <Breadcrumb
+      trail={[
+        { href: "/", label: "home" },
+        { href: "/posts", label: "writing" },
+        { label: post.title },
+      ]}
+    />
 
     <article>
       <PageHeader title={post.title} size="large">

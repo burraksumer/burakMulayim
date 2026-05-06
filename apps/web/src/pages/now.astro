@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import BackNav from "../components/BackNav.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
 import DateTime from "../components/DateTime.astro";
 import ExternalLink from "../components/ExternalLink.astro";
 import HeaderMeta from "../components/HeaderMeta.astro";
@@ -16,7 +16,7 @@ const bodyHtml = now ? await marked.parse(now.body) : null;
 
 <Layout title="Now — Burak Sümer" description="What I'm currently focused on.">
   <PageMain>
-    <BackNav href="/" label="home" />
+    <Breadcrumb trail={[{ href: "/", label: "home" }, { label: "now" }]} />
     <PageHeader title="Now">
       {
         now && (

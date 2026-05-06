@@ -1,13 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import BackNav from "../components/BackNav.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageMain from "../components/PageMain.astro";
 ---
 
 <Layout title="About — Burak Sümer" description="About Burak.">
   <PageMain>
-    <BackNav href="/" label="home" />
+    <Breadcrumb trail={[{ href: "/", label: "home" }, { label: "about" }]} />
     <PageHeader title="About" />
 
     <div class="text-ink-1 space-y-5 text-[15px] leading-relaxed">

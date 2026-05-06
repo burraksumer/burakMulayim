@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import BackNav from "../../components/BackNav.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageMain from "../../components/PageMain.astro";
 import { api } from "../../lib/api";
@@ -14,7 +14,7 @@ const description = tags.length
 
 <Layout title="Tags — Burak Sümer" description="All tags.">
   <PageMain>
-    <BackNav href="/" label="home" />
+    <Breadcrumb trail={[{ href: "/", label: "home" }, { label: "tags" }]} />
     <PageHeader title="Tags" description={description} class="mb-16" />
 
     {
