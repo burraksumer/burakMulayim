@@ -12,11 +12,11 @@ const [posts, lastfm, now] = await Promise.all([api.posts(), api.lastfm(), api.n
 const recentPosts = (posts ?? []).slice(0, 2);
 const nowTrack = lastfm?.tracks.find((t) => t.now_playing) ?? lastfm?.tracks[0];
 
-const social: { href: string; label: string; external: boolean }[] = [
-  { href: "https://github.com/burraksumer", label: "github", external: true },
-  { href: "https://x.com/burraksumer", label: "twitter", external: true },
-  { href: "https://www.last.fm/user/buraksumer13", label: "last.fm", external: true },
-  { href: "mailto:burak@stationwise.com", label: "email", external: false },
+const social: { href: string; label: string }[] = [
+  { href: "https://github.com/burraksumer", label: "github" },
+  { href: "https://x.com/burraksumer", label: "twitter" },
+  { href: "https://www.last.fm/user/buraksumer13", label: "last.fm" },
+  { href: "mailto:burak@stationwise.com", label: "email" },
 ];
 ---
 
@@ -102,27 +102,13 @@ const social: { href: string; label: string; external: boolean }[] = [
       <SectionLabel class="mb-6">Elsewhere</SectionLabel>
       <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
         {
-          social.map((s) =>
-            s.external ? (
-              <li>
-                <ExternalLink href={s.href} class="text-ink-2 hover:text-ink-1">
-                  {s.label}
-                </ExternalLink>
-              </li>
-            ) : (
-              <li>
-                <a href={s.href} class="group/link text-ink-2 hover:text-ink-1">
-                  {s.label}
-                  <span
-                    class="text-ink-3 group-hover/link:text-ink-accent ml-0.5 align-super font-mono text-[10px]"
-                    aria-hidden="true"
-                  >
-                    ↗
-                  </span>
-                </a>
-              </li>
-            ),
-          )
+          social.map((s) => (
+            <li>
+              <ExternalLink href={s.href} class="text-ink-2 hover:text-ink-1">
+                {s.label}
+              </ExternalLink>
+            </li>
+          ))
         }
       </ul>
     </section>
