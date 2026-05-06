@@ -14,7 +14,7 @@
     }
   },
   "scripts": {
-    "check-types": "tsc --noEmit -p .",
+    "check-types": "tsgo --noEmit -p .",
     "test": "bun test"
   },
   "dependencies": {
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@burakmulayim/config": "workspace:*",
     "@types/bun": "catalog:",
+    "@typescript/native-preview": "catalog:",
     "typescript": "catalog:"
   }
 }
