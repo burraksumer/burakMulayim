@@ -4,8 +4,7 @@ import { basename, extname, join } from "node:path";
 import matter from "gray-matter";
 
 import type { Post, PostMeta } from "@burakmulayim/shared";
-
-const WORDS_PER_MINUTE = 220;
+import { makeExcerpt, readingTime } from "@burakmulayim/shared";
 
 export interface LoadPostsOptions {
   dir: string;
@@ -30,22 +29,6 @@ function toIsoDate(value: Date | string | undefined): string {
   if (!value) throw new Error("post is missing `date` in frontmatter");
   if (value instanceof Date) return value.toISOString().slice(0, 10);
   return new Date(value).toISOString().slice(0, 10);
-}
-
-function readingTime(body: string): number {
-  const words = body.trim().split(/\s+/u).filter(Boolean).length;
-  return Math.max(1, Math.round(words / WORDS_PER_MINUTE));
-}
-
-function makeExcerpt(description: string | undefined, body: string): string {
-  if (description && description.trim().length > 0) return description.trim();
-  const firstPara = body
-    .split(/\n{2,}/u)
-    .map((s) => s.trim())
-    .find((s) => s.length > 0 && !s.startsWith("#"));
-  if (!firstPara) return "";
-  const stripped = firstPara.replace(/[*_`>#]+/gu, "");
-  return stripped.length <= 280 ? stripped : `${stripped.slice(0, 277).trimEnd()}...`;
 }
 
 function deriveTags(fm: RawFrontmatter): string[] {

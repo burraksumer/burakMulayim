@@ -2,72 +2,21 @@
 // Server-side only — runs in Astro frontmatter on each request.
 // Failures are swallowed and return null so pages can degrade gracefully
 // when the backend is unreachable (rare, but possible during deploys).
+//
+// All response types and shared display formatters come from
+// `@burakmulayim/shared`. This file is purely the HTTP client glue.
+
+import type {
+  Carbon,
+  LastfmResponse,
+  Now,
+  Post,
+  PostMeta,
+  Tag,
+  TagWithPosts,
+} from "@burakmulayim/shared";
 
 const SERVER_URL = import.meta.env.PUBLIC_SERVER_URL ?? "http://localhost:3000";
-
-export interface PostMeta {
-  slug: string;
-  title: string;
-  date: string;
-  description?: string;
-  author?: string;
-  category?: string;
-  tags: string[];
-  draft: boolean;
-  excerpt: string;
-  reading_time: number;
-}
-
-export interface Post extends PostMeta {
-  body: string;
-}
-
-export interface Tag {
-  tag: string;
-  /** URL-safe slug derived from the tag (lowercase, hyphenated, ASCII). */
-  slug: string;
-  count: number;
-}
-
-export interface LastfmTrack {
-  name: string;
-  artist: string;
-  album?: string;
-  url: string;
-  image?: string;
-  played_at?: string;
-  now_playing: boolean;
-}
-
-export interface LastfmResponse {
-  user: string;
-  tracks: LastfmTrack[];
-  fetched_at: string;
-  last_success_at: string;
-  stale: boolean;
-}
-
-export interface CarbonResponse {
-  url: string;
-  green: boolean;
-  bytes: number;
-  adjusted_bytes: number;
-  energy: number;
-  gco2e: number;
-  cleanerThan: number;
-  rating: string;
-  fetched_at: string;
-  last_success_at: string;
-  last_changed_at: string;
-  stale: boolean;
-}
-
-export interface NowResponse {
-  body: string;
-  /** First list item from now.md, intended for a homepage one-liner. */
-  headline?: string;
-  last_modified: string;
-}
 
 async function safeJson<T>(path: string, timeoutMs = 2_000): Promise<T | null> {
   try {
@@ -81,46 +30,26 @@ async function safeJson<T>(path: string, timeoutMs = 2_000): Promise<T | null> {
   }
 }
 
-export interface TagWithPosts {
-  tag: string;
-  /** Canonical URL slug — frontend should redirect if the URL doesn't match. */
-  slug: string;
-  posts: PostMeta[];
-}
-
 export const api = {
   posts: () => safeJson<PostMeta[]>("/posts"),
   post: (slug: string) => safeJson<Post>(`/posts/${encodeURIComponent(slug)}`),
   tags: () => safeJson<Tag[]>("/tags"),
   tag: (name: string) => safeJson<TagWithPosts>(`/tags/${encodeURIComponent(name)}`),
   lastfm: () => safeJson<LastfmResponse>("/lastfm"),
-  carbon: () => safeJson<CarbonResponse>("/carbon"),
-  now: () => safeJson<NowResponse>("/now"),
+  carbon: () => safeJson<Carbon>("/carbon"),
+  now: () => safeJson<Now>("/now"),
 };
 
-// ---- shared formatters used across pages ----
-
-export const fmtDate = (iso: string) => iso.slice(0, 10).replace(/-/g, ".");
-
-// Re-export the shared slugify so callers can import everything from one
-// place: import { api, fmtDate, slugify } from "../lib/api".
-export { slugify } from "@burakmulayim/shared";
-
-export const fmtLongDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-export const relativeTime = (iso?: string): string => {
-  if (!iso) return "";
-  const diff = Date.now() - new Date(iso).getTime();
-  const min = Math.round(diff / 60_000);
-  if (min < 1) return "just now";
-  if (min < 60) return `${min}m ago`;
-  const hr = Math.round(min / 60);
-  if (hr < 24) return `${hr}h ago`;
-  const day = Math.round(hr / 24);
-  return `${day}d ago`;
-};
+// Re-export shared primitives so page frontmatter can do a single import
+// (`import { api, fmtDate, slugify } from "../lib/api"`).
+export type {
+  Carbon,
+  LastfmResponse,
+  LastfmTrack,
+  Now,
+  Post,
+  PostMeta,
+  Tag,
+  TagWithPosts,
+} from "@burakmulayim/shared";
+export { fmtDate, fmtLongDate, relativeTime, slugify } from "@burakmulayim/shared";

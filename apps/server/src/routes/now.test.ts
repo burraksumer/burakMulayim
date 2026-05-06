@@ -5,7 +5,7 @@ import { join } from "node:path";
 
 import { NowSchema } from "@burakmulayim/shared";
 
-import { extractHeadline, nowRoutes } from "./now";
+import { nowRoutes } from "./now";
 
 let tmp: string;
 
@@ -19,42 +19,8 @@ afterEach(async () => {
 
 const app = (filename = "now.md") => nowRoutes({ contentDir: tmp, filename }).compile();
 
-describe("extractHeadline", () => {
-  it("strips bold around the subject", () => {
-    expect(extractHeadline("- **Building** stuff — a description.")).toBe("Building stuff");
-  });
-  it("returns the whole bullet when no separator is present", () => {
-    expect(extractHeadline("- Just a single short item")).toBe("Just a single short item");
-  });
-  it("ignores headings before the first bullet", () => {
-    expect(extractHeadline("## Heading\n\n- First bullet — detail")).toBe("First bullet");
-  });
-  it("strips link syntax", () => {
-    expect(extractHeadline("- [burak.mulayim.app](https://burak.mulayim.app) — site")).toBe(
-      "burak.mulayim.app",
-    );
-  });
-  it("splits on en dash with spaces", () => {
-    expect(extractHeadline("- Reading list – books for May")).toBe("Reading list");
-  });
-  it("splits on hyphen with spaces", () => {
-    expect(extractHeadline("- Reading list - books for May")).toBe("Reading list");
-  });
-  it("splits on colon followed by a space", () => {
-    expect(extractHeadline("- Currently: writing the next post")).toBe("Currently");
-  });
-  it("does not split on hyphens inside words or URLs", () => {
-    expect(extractHeadline("- Visiting burak.mulayim.app/foo-bar today")).toBe(
-      "Visiting burak.mulayim.app/foo-bar today",
-    );
-  });
-  it("uses the earliest separator when multiple are present", () => {
-    expect(extractHeadline("- Title: subtitle — detail")).toBe("Title");
-  });
-  it("returns undefined when no list item exists", () => {
-    expect(extractHeadline("Just a paragraph, no bullets here.")).toBeUndefined();
-  });
-});
+// Unit tests for `extractHeadline` live in packages/shared/src/markdown.test.ts;
+// the route tests below cover the integration (file → API response).
 
 describe("GET /now", () => {
   it("returns the file body and last_modified timestamp", async () => {

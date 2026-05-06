@@ -28,6 +28,16 @@ export const TagSchema = z.object({
 
 export const TagListSchema = z.array(TagSchema);
 
+/**
+ * Response shape for `GET /tags/:slug` — canonical display name + canonical
+ * slug + matching posts. Frontend uses `slug` to decide whether to redirect.
+ */
+export const TagWithPostsSchema = z.object({
+  tag: z.string(),
+  slug: z.string(),
+  posts: PostListSchema,
+});
+
 export const SearchHitSchema = PostMetaSchema.extend({
   score: z.number(),
   snippet: z.string(),
@@ -41,5 +51,6 @@ export const SearchResultSchema = z.object({
 export type PostMeta = z.infer<typeof PostMetaSchema>;
 export type Post = z.infer<typeof PostSchema>;
 export type Tag = z.infer<typeof TagSchema>;
+export type TagWithPosts = z.infer<typeof TagWithPostsSchema>;
 export type SearchHit = z.infer<typeof SearchHitSchema>;
 export type SearchResult = z.infer<typeof SearchResultSchema>;
