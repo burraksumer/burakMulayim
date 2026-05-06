@@ -1,0 +1,21 @@
+# Files prettier shouldn't touch — either generated, owned by oxfmt, or noise.
+node_modules
+**/dist
+**/.turbo
+**/.cache
+**/coverage
+**/.astro
+bun.lock
+local.db
+local.db-wal
+local.db-shm
+
+# JS/TS belongs to oxfmt, not prettier — avoid double-formatting wars.
+**/*.js
+**/*.jsx
+**/*.ts
+**/*.tsx
+**/*.mjs
+**/*.cjs
+**/*.mts
+**/*.cts

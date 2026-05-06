@@ -2,12 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { api, fmtDate, relativeTime } from "../lib/api";
 
-const [posts, lastfm, carbon, now] = await Promise.all([
-  api.posts(),
-  api.lastfm(),
-  api.carbon(),
-  api.now(),
-]);
+const [posts, lastfm, now] = await Promise.all([api.posts(), api.lastfm(), api.now()]);
 
 const recentPosts = (posts ?? []).slice(0, 2);
 const nowTrack = lastfm?.tracks.find((t) => t.now_playing) ?? lastfm?.tracks[0];
@@ -18,30 +13,22 @@ const social = [
   { href: "https://www.last.fm/user/buraksumer13", label: "last.fm" },
   { href: "mailto:burak@stationwise.com", label: "email" },
 ];
-
-// 512kb.club tier: "green" (<100KB), "orange" (100-250KB), "blue" (250-512KB).
-// Flip if the deployed homepage stops qualifying.
-const KB_CLUB_TIER: "green" | "orange" | "blue" = "green";
 ---
 
 <Layout>
   <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
     <!-- Identity -->
     <section class="mb-16">
-      <h1 class="font-serif text-3xl tracking-tight text-[var(--color-ink-1)]">
-        Burak Sümer
-      </h1>
+      <h1 class="font-serif text-3xl tracking-tight text-[var(--color-ink-1)]">Burak Sümer</h1>
       <p class="mt-3 max-w-prose text-[15px] leading-relaxed text-[var(--color-ink-2)]">
-        Software engineer, building things in Istanbul. I write about minimal
-        software, the web, and whatever else I'm thinking through.
+        Software engineer, building things in Istanbul. I write about minimal software, the web, and
+        whatever else I'm thinking through.
       </p>
     </section>
 
     <!-- Latest writing -->
     <section class="mb-16">
-      <h2
-        class="mb-6 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-3)] uppercase"
-      >
+      <h2 class="mb-6 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-3)] uppercase">
         Writing
       </h2>
       {
@@ -140,7 +127,7 @@ const KB_CLUB_TIER: "green" | "orange" | "blue" = "green";
                 >
                   <span class="font-serif italic">{now.headline}</span>
                   <span
-                    class="ml-1 font-mono text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+                    class="ml-1 font-mono text-xs text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
                     aria-hidden="true"
                   >
                     →
@@ -155,9 +142,7 @@ const KB_CLUB_TIER: "green" | "orange" | "blue" = "green";
 
     <!-- Elsewhere -->
     <section class="mb-16">
-      <h2
-        class="mb-6 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-3)] uppercase"
-      >
+      <h2 class="mb-6 font-mono text-xs tracking-[0.2em] text-[var(--color-ink-3)] uppercase">
         Elsewhere
       </h2>
       <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
@@ -186,39 +171,5 @@ const KB_CLUB_TIER: "green" | "orange" | "blue" = "green";
         }
       </ul>
     </section>
-
-    <!-- Footer / lean-web markers -->
-    <footer
-      class="mt-24 border-t border-[var(--color-ink-rule)] pt-6 font-mono text-xs text-[var(--color-ink-3)]"
-    >
-      <p>
-        {
-          carbon ? (
-            <>
-              this page emits ≈ {carbon.gco2e.toFixed(4)}g CO₂ — cleaner than{" "}
-              {Math.round(carbon.cleanerThan * 100)}%
-              <span class="ml-1 text-[var(--color-ink-2)]">({carbon.rating})</span>
-            </>
-          ) : (
-            <>built lean</>
-          )
-        }
-        <span class="mx-2 text-[var(--color-ink-rule)]">·</span>
-        <a
-          href="https://512kb.club/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group/link hover:text-[var(--color-ink-1)]"
-        >
-          512kb.club {KB_CLUB_TIER}
-          <span
-            class="ml-0.5 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
-            aria-hidden="true"
-          >
-            ↗
-          </span>
-        </a>
-      </p>
-    </footer>
   </main>
 </Layout>

@@ -20,17 +20,11 @@ marked.setOptions({
 const bodyHtml = await marked.parse(post.body);
 ---
 
-<Layout
-  title={`${post.title} — Burak Sümer`}
-  description={post.description ?? post.excerpt}
->
+<Layout title={`${post.title} — Burak Sümer`} description={post.description ?? post.excerpt}>
   <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
     <!-- Breadcrumb -->
     <nav class="mb-12 font-mono text-xs">
-      <a
-        href="/posts"
-        class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]"
-      >
+      <a href="/posts" class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]">
         <span
           class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
           aria-hidden="true">←</span
@@ -54,9 +48,7 @@ const bodyHtml = await marked.parse(post.body);
           >
             {fmtLongDate(post.date)}
           </time>
-          <span
-            class="font-mono text-xs text-[var(--color-ink-3)] tabular-nums"
-          >
+          <span class="font-mono text-xs text-[var(--color-ink-3)] tabular-nums">
             {post.reading_time} min
           </span>
           {
@@ -80,22 +72,6 @@ const bodyHtml = await marked.parse(post.body);
 
       <!-- Body -->
       <div class="post-body" set:html={bodyHtml} />
-
-      <!-- Footer / nav back -->
-      <footer
-        class="mt-20 border-t border-[var(--color-ink-rule)] pt-8 font-mono text-xs"
-      >
-        <a
-          href="/posts"
-          class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]"
-        >
-          <span
-            class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
-            aria-hidden="true">←</span
-          >
-          back to writing
-        </a>
-      </footer>
     </article>
   </main>
 </Layout>

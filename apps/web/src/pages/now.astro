@@ -10,10 +10,7 @@ const bodyHtml = now ? await marked.parse(now.body) : null;
 <Layout title="Now — Burak Sümer" description="What I'm currently focused on.">
   <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
     <nav class="mb-12 font-mono text-xs">
-      <a
-        href="/"
-        class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]"
-      >
+      <a href="/" class="group/link text-[var(--color-ink-3)] hover:text-[var(--color-ink-1)]">
         <span
           class="mr-1 text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
           aria-hidden="true">←</span
@@ -24,7 +21,33 @@ const bodyHtml = now ? await marked.parse(now.body) : null;
 
     <header class="mb-12">
       <h1 class="font-serif text-3xl tracking-tight text-[var(--color-ink-1)]">Now</h1>
-      <p class="mt-3 text-[var(--color-ink-2)]">What I'm focused on this month.</p>
+      {
+        now && (
+          <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs text-[var(--color-ink-3)]">
+            <span>
+              Updated{" "}
+              <time datetime={now.last_modified} class="tabular-nums">
+                {fmtLongDate(now.last_modified)}
+              </time>
+            </span>
+            <span aria-hidden="true">·</span>
+            <a
+              href="https://nownownow.com/about"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group/link hover:text-[var(--color-ink-1)]"
+            >
+              nownownow.com
+              <span
+                class="ml-0.5 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+                aria-hidden="true"
+              >
+                ↗
+              </span>
+            </a>
+          </div>
+        )
+      }
     </header>
 
     {
@@ -32,30 +55,6 @@ const bodyHtml = now ? await marked.parse(now.body) : null;
         <div class="post-body" set:html={bodyHtml ?? ""} />
       ) : (
         <p class="text-[var(--color-ink-3)]">Now page unavailable.</p>
-      )
-    }
-
-    {
-      now && (
-        <footer class="mt-12 border-t border-[var(--color-ink-rule)] pt-6 font-mono text-xs text-[var(--color-ink-3)]">
-          Last updated{" "}
-          <time datetime={now.last_modified}>{fmtLongDate(now.last_modified)}</time>
-          <span class="mx-2 text-[var(--color-ink-rule)]">·</span>
-          <a
-            href="https://nownownow.com/about"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group/link hover:text-[var(--color-ink-1)]"
-          >
-            nownownow.com
-            <span
-              class="ml-0.5 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
-              aria-hidden="true"
-            >
-              ↗
-            </span>
-          </a>
-        </footer>
       )
     }
   </main>

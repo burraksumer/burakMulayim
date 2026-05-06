@@ -1,0 +1,47 @@
+---
+import { api } from "../lib/api";
+
+// Site-level footer: carbon stat + 512kb.club marker.
+// Rendered on every page via Layout. Failures degrade silently — if /carbon
+// is unreachable, we fall back to the static "built lean" line.
+const carbon = await api.carbon();
+
+// 512kb.club tier: "green" (<100KB), "orange" (100-250KB), "blue" (250-512KB).
+// Flip if a deployed page stops qualifying.
+const KB_CLUB_TIER: "green" | "orange" | "blue" = "green";
+---
+
+<footer
+  class="mx-auto w-full max-w-2xl border-t border-[var(--color-ink-rule)] px-6 py-8 font-mono text-xs text-[var(--color-ink-3)]"
+>
+  <div>
+    <p>
+      {
+        carbon ? (
+          <>
+            this page emits ≈ {carbon.gco2e.toFixed(4)}g CO₂ — cleaner than{" "}
+            {Math.round(carbon.cleanerThan * 100)}%
+            <span class="ml-1 text-[var(--color-ink-2)]">({carbon.rating})</span>
+          </>
+        ) : (
+          <>built lean</>
+        )
+      }
+      <span class="mx-2 text-[var(--color-ink-rule)]">·</span>
+      <a
+        href="https://512kb.club/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group/link hover:text-[var(--color-ink-1)]"
+      >
+        512kb.club {KB_CLUB_TIER}
+        <span
+          class="ml-0.5 align-super font-mono text-[10px] text-[var(--color-ink-3)] group-hover/link:text-[var(--color-ink-accent)]"
+          aria-hidden="true"
+        >
+          ↗
+        </span>
+      </a>
+    </p>
+  </div>
+</footer>

@@ -24,7 +24,8 @@
     "db:studio": "bun run --filter @burakMulayim/db db:studio",
     "db:generate": "bun run --filter @burakMulayim/db db:generate",
     "db:migrate": "bun run --filter @burakMulayim/db db:migrate",
-    "check": "oxlint && oxfmt --write",
+    "check": "oxlint && oxfmt --write && prettier --write .",
+    "check:ci": "oxlint && oxfmt --check && prettier --check .",
     "test": "bun run --filter '*' test",
     "prepare": "husky"
   },
@@ -40,14 +41,17 @@
     "lint-staged": "^16.1.2",
     "oxfmt": "^0.46.0",
     "oxlint": "^1.61.0",
+    "prettier": "3.8.3",
+    "prettier-plugin-astro": "0.14.1",
     "typescript": "catalog:"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [
-      "oxlint"
-    ],
-    "*": [
+      "oxlint",
       "oxfmt --write"
+    ],
+    "*.{astro,json,jsonc,md,mdx,css,yml,yaml}": [
+      "prettier --write"
     ]
   },
   "packageManager": "bun@1.3.13"
