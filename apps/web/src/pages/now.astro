@@ -1,11 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import BackNav from "../components/BackNav.astro";
+import DateTime from "../components/DateTime.astro";
 import ExternalLink from "../components/ExternalLink.astro";
+import HeaderMeta from "../components/HeaderMeta.astro";
 import MarkdownBody from "../components/MarkdownBody.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageMain from "../components/PageMain.astro";
-import { api, fmtLongDate } from "../lib/api";
+import { api } from "../lib/api";
 import { marked } from "marked";
 
 const now = await api.now();
@@ -18,18 +20,15 @@ const bodyHtml = now ? await marked.parse(now.body) : null;
     <PageHeader title="Now">
       {
         now && (
-          <div class="text-ink-3 mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs">
+          <HeaderMeta class="text-ink-3 font-mono text-xs">
             <span>
-              Updated{" "}
-              <time datetime={now.last_modified} class="tabular-nums">
-                {fmtLongDate(now.last_modified)}
-              </time>
+              Updated <DateTime date={now.last_modified} format="long" />
             </span>
             <span aria-hidden="true">·</span>
             <ExternalLink href="https://nownownow.com/about" class="hover:text-ink-1">
               nownownow.com
             </ExternalLink>
-          </div>
+          </HeaderMeta>
         )
       }
     </PageHeader>

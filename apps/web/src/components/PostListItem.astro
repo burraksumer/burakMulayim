@@ -1,6 +1,6 @@
 ---
 import type { PostMeta } from "@burakmulayim/shared";
-import { fmtDate } from "@burakmulayim/shared";
+import DateTime from "./DateTime.astro";
 
 /**
  * One row in a list of posts: date column + serif title + clamped excerpt.
@@ -17,9 +17,7 @@ const { post } = Astro.props;
 ---
 
 <a href={`/posts/${post.slug}`} class="group grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-1">
-  <time class="text-ink-3 row-start-1 pt-0.75 font-mono text-xs tabular-nums" datetime={post.date}>
-    {fmtDate(post.date)}
-  </time>
+  <DateTime date={post.date} class="row-start-1 pt-0.75" />
   <h3 class="text-ink-1 group-hover:text-ink-accent row-start-1 font-serif text-lg">
     {post.title}
   </h3>

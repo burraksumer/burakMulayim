@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import NumberedListItem from "../components/NumberedListItem.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageMain from "../components/PageMain.astro";
 import SectionLabel from "../components/SectionLabel.astro";
@@ -31,14 +32,9 @@ const description =
     <ul class="grid grid-cols-[3rem_1fr] items-baseline gap-x-5 gap-y-4">
       {
         places.map((p, i) => (
-          <li class="contents">
-            <span class="text-ink-3 font-mono text-xs tabular-nums" aria-hidden="true">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <a href={p.href} class="text-ink-1 hover:text-ink-accent font-serif text-lg">
-              {p.label}
-            </a>
-          </li>
+          <NumberedListItem number={String(i + 1).padStart(2, "0")} href={p.href}>
+            {p.label}
+          </NumberedListItem>
         ))
       }
     </ul>

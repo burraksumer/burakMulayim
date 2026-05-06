@@ -3,7 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import BackNav from "../../components/BackNav.astro";
 import PageMain from "../../components/PageMain.astro";
 import PageHeader from "../../components/PageHeader.astro";
-import PostListItem from "../../components/PostListItem.astro";
+import PostList from "../../components/PostList.astro";
 import SectionLabel from "../../components/SectionLabel.astro";
 import { api, type PostMeta } from "../../lib/api";
 
@@ -35,13 +35,7 @@ const description = posts.length
         years.map((year) => (
           <section class="mb-12">
             <SectionLabel class="mb-6">{year}</SectionLabel>
-            <ul class="space-y-6">
-              {byYear.get(year)!.map((p) => (
-                <li>
-                  <PostListItem post={p} />
-                </li>
-              ))}
-            </ul>
+            <PostList posts={byYear.get(year)!} />
           </section>
         ))
       )

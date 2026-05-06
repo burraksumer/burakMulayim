@@ -3,7 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import BackNav from "../../components/BackNav.astro";
 import PageHeader from "../../components/PageHeader.astro";
 import PageMain from "../../components/PageMain.astro";
-import PostListItem from "../../components/PostListItem.astro";
+import PostList from "../../components/PostList.astro";
 import SectionLabel from "../../components/SectionLabel.astro";
 import { api } from "../../lib/api";
 import { canonicalTagPath } from "@burakmulayim/shared";
@@ -29,14 +29,6 @@ const description = `${result.posts.length} ${result.posts.length === 1 ? "post"
       <SectionLabel as="p" slot="eyebrow" class="mb-2">Tag</SectionLabel>
     </PageHeader>
 
-    <ul class="space-y-6">
-      {
-        result.posts.map((p) => (
-          <li>
-            <PostListItem post={p} />
-          </li>
-        ))
-      }
-    </ul>
+    <PostList posts={result.posts} />
   </PageMain>
 </Layout>

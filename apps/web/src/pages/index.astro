@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import ExternalLink from "../components/ExternalLink.astro";
 import InternalLink from "../components/InternalLink.astro";
 import PageMain from "../components/PageMain.astro";
-import PostListItem from "../components/PostListItem.astro";
+import PostList from "../components/PostList.astro";
 import SectionLabel from "../components/SectionLabel.astro";
 import { api, relativeTime } from "../lib/api";
 
@@ -38,13 +38,7 @@ const social: { href: string; label: string; external: boolean }[] = [
         recentPosts.length === 0 ? (
           <p class="text-ink-3 text-sm">No posts loaded.</p>
         ) : (
-          <ul class="space-y-6">
-            {recentPosts.map((p) => (
-              <li>
-                <PostListItem post={p} />
-              </li>
-            ))}
-          </ul>
+          <PostList posts={recentPosts} />
         )
       }
       <InternalLink
