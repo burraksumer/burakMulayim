@@ -16,9 +16,9 @@ export function postRoutes({ store }: PostRouteDeps) {
     })
     .get("/tags", () => store.tags())
     .get("/tags/:tag", ({ params, status }) => {
-      const tag = decodeURIComponent(params.tag);
-      const posts = store.byTag(tag);
-      if (posts.length === 0) return status(404, { error: "tag not found" });
-      return { tag, posts };
+      const input = decodeURIComponent(params.tag);
+      const result = store.byTag(input);
+      if (!result) return status(404, { error: "tag not found" });
+      return { tag: result.canonical, slug: result.slug, posts: result.posts };
     });
 }

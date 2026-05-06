@@ -1,7 +1,7 @@
 import { dirname, resolve } from "node:path";
 
-import { createDb } from "@burakMulayim/db";
-import { env } from "@burakMulayim/env/server";
+import { createDb } from "@burakmulayim/db";
+import { env } from "@burakmulayim/env/server";
 
 import { buildApp } from "./app";
 import { Cache } from "./cache";

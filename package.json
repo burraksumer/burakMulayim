@@ -20,22 +20,22 @@
     "check-types": "bun run --filter '*' check-types",
     "dev:web": "bun run --filter web dev",
     "dev:server": "bun run --filter server dev",
-    "db:push": "bun run --filter @burakMulayim/db db:push",
-    "db:studio": "bun run --filter @burakMulayim/db db:studio",
-    "db:generate": "bun run --filter @burakMulayim/db db:generate",
-    "db:migrate": "bun run --filter @burakMulayim/db db:migrate",
-    "check": "oxlint && oxfmt --write && prettier --write .",
-    "check:ci": "oxlint && oxfmt --check && prettier --check .",
+    "db:push": "bun run --filter @burakmulayim/db db:push",
+    "db:studio": "bun run --filter @burakmulayim/db db:studio",
+    "db:generate": "bun run --filter @burakmulayim/db db:generate",
+    "db:migrate": "bun run --filter @burakmulayim/db db:migrate",
+    "check": "oxlint && oxfmt --write --ignore-path .gitignore && prettier --write .",
+    "check:ci": "oxlint && oxfmt --check --ignore-path .gitignore && prettier --check .",
     "test": "bun run --filter '*' test",
     "prepare": "husky"
   },
   "dependencies": {
-    "@burakMulayim/env": "workspace:*",
+    "@burakmulayim/env": "workspace:*",
     "dotenv": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@burakMulayim/config": "workspace:*",
+    "@burakmulayim/config": "workspace:*",
     "@types/bun": "catalog:",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
@@ -50,7 +50,7 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [
       "oxlint",
-      "oxfmt --write"
+      "oxfmt --write --ignore-path .gitignore"
     ],
     "*.{astro,json,jsonc,md,mdx,css,yml,yaml}": [
       "prettier --write"

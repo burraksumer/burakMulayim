@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, mock } from "bun:test";
 
-import { createDb, type DbClient } from "@burakMulayim/db";
+import { createDb, type DbClient } from "@burakmulayim/db";
 
 import { Cache } from "./index";
 

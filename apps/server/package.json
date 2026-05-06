@@ -1,5 +1,7 @@
 {
   "name": "server",
+  "version": "0.0.0",
+  "private": true,
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
@@ -11,9 +13,9 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@burakMulayim/db": "workspace:*",
-    "@burakMulayim/env": "workspace:*",
-    "@burakMulayim/shared": "workspace:*",
+    "@burakmulayim/db": "workspace:*",
+    "@burakmulayim/env": "workspace:*",
+    "@burakmulayim/shared": "workspace:*",
     "@elysiajs/cors": "^1.4.1",
     "@sinclair/typebox": "^0.34.49",
     "dotenv": "catalog:",
@@ -22,7 +24,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@burakMulayim/config": "workspace:*",
+    "@burakmulayim/config": "workspace:*",
     "@types/bun": "catalog:",
     "tsdown": "^0.21.9",
     "typescript": "catalog:"

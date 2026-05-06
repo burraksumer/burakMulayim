@@ -24,6 +24,8 @@ export interface Post extends PostMeta {
 
 export interface Tag {
   tag: string;
+  /** URL-safe slug derived from the tag (lowercase, hyphenated, ASCII). */
+  slug: string;
   count: number;
 }
 
@@ -79,10 +81,18 @@ async function safeJson<T>(path: string, timeoutMs = 2_000): Promise<T | null> {
   }
 }
 
+export interface TagWithPosts {
+  tag: string;
+  /** Canonical URL slug — frontend should redirect if the URL doesn't match. */
+  slug: string;
+  posts: PostMeta[];
+}
+
 export const api = {
   posts: () => safeJson<PostMeta[]>("/posts"),
   post: (slug: string) => safeJson<Post>(`/posts/${encodeURIComponent(slug)}`),
   tags: () => safeJson<Tag[]>("/tags"),
+  tag: (name: string) => safeJson<TagWithPosts>(`/tags/${encodeURIComponent(name)}`),
   lastfm: () => safeJson<LastfmResponse>("/lastfm"),
   carbon: () => safeJson<CarbonResponse>("/carbon"),
   now: () => safeJson<NowResponse>("/now"),
@@ -91,6 +101,10 @@ export const api = {
 // ---- shared formatters used across pages ----
 
 export const fmtDate = (iso: string) => iso.slice(0, 10).replace(/-/g, ".");
+
+// Re-export the shared slugify so callers can import everything from one
+// place: import { api, fmtDate, slugify } from "../lib/api".
+export { slugify } from "@burakmulayim/shared";
 
 export const fmtLongDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-US", {

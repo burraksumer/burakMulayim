@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "bun:test";
 import { resolve } from "node:path";
 
-import { createDb, type DbClient } from "@burakMulayim/db";
-import { SearchResultSchema } from "@burakMulayim/shared";
+import { createDb, type DbClient } from "@burakmulayim/db";
+import { SearchResultSchema } from "@burakmulayim/shared";
 
 import { loadPosts } from "../posts/loader";
 import { PostStore } from "../posts/store";

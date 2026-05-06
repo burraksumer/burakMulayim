@@ -3,7 +3,7 @@ import { basename, extname, join } from "node:path";
 
 import matter from "gray-matter";
 
-import type { Post, PostMeta } from "@burakMulayim/shared";
+import type { Post, PostMeta } from "@burakmulayim/shared";
 
 const WORDS_PER_MINUTE = 220;
 

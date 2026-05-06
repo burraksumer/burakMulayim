@@ -1,4 +1,4 @@
-import type { Carbon } from "@burakMulayim/shared";
+import type { Carbon } from "@burakmulayim/shared";
 
 export interface CarbonFetcherDeps {
   url: string;

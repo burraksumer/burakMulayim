@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 
-import type { DbClient } from "@burakMulayim/db";
+import type { DbClient } from "@burakmulayim/db";
 
 import { Cache, type Fetcher } from "./cache";
 import type { FeedSiteConfig } from "./feeds";

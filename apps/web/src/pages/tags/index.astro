@@ -1,0 +1,49 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { api } from "../../lib/api";
+
+const tags = (await api.tags()) ?? [];
+---
+
+<Layout title="Tags — Burak Sümer" description="All tags.">
+  <main class="mx-auto w-full max-w-2xl px-6 py-20 sm:py-28">
+    <nav class="mb-12 font-mono text-xs">
+      <a href="/" class="group/link text-ink-3 hover:text-ink-1">
+        <span class="text-ink-3 group-hover/link:text-ink-accent mr-1" aria-hidden="true">←</span>
+        home
+      </a>
+    </nav>
+
+    <header class="mb-16">
+      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Tags</h1>
+      <p class="text-ink-2 mt-3">
+        {tags.length}
+        {tags.length === 1 ? "tag" : "tags"} across the writing.
+      </p>
+    </header>
+
+    {
+      tags.length === 0 ? (
+        <p class="text-ink-3">Tags unavailable.</p>
+      ) : (
+        <ul class="space-y-4">
+          {tags.map((t) => (
+            <li>
+              <a
+                href={`/tags/${t.slug}`}
+                class="group grid grid-cols-[2.5rem_1fr] items-baseline gap-x-5"
+              >
+                <span class="text-ink-3 row-start-1 font-mono text-xs tabular-nums">
+                  {String(t.count).padStart(2, "0")}
+                </span>
+                <span class="text-ink-1 group-hover:text-ink-accent row-start-1 font-serif text-lg">
+                  {t.tag}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </main>
+</Layout>

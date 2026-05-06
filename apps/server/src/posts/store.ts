@@ -1,5 +1,6 @@
-import type { DbClient } from "@burakMulayim/db";
-import type { Post, PostMeta, SearchHit, Tag } from "@burakMulayim/shared";
+import type { DbClient } from "@burakmulayim/db";
+import type { Post, PostMeta, SearchHit, Tag } from "@burakmulayim/shared";
+import { slugify } from "@burakmulayim/shared";
 
 import { toMeta } from "./loader";
 
@@ -25,7 +26,7 @@ export class PostStore {
 
   list(): PostMeta[] {
     return Array.from(this.bySlug.values())
-      .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+      .toSorted((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
       .map(toMeta);
   }
 
@@ -39,12 +40,24 @@ export class PostStore {
       for (const t of p.tags) counts.set(t, (counts.get(t) ?? 0) + 1);
     }
     return Array.from(counts.entries())
-      .map(([tag, count]) => ({ tag, count }))
-      .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+      .map(([tag, count]) => ({ tag, slug: slugify(tag), count }))
+      .toSorted((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
   }
 
-  byTag(tag: string): PostMeta[] {
-    return this.list().filter((p) => p.tags.includes(tag));
+  /**
+   * Find posts by tag. Accepts the canonical display form, the lowercase form,
+   * the URL slug, or any free-form input that slugifies to the same value —
+   * lookup is purely by slug equivalence. Returns the canonical display form
+   * (`canonical`) and the canonical slug (`slug`) so callers can render the
+   * proper capitalization and decide whether to redirect to the canonical URL.
+   */
+  byTag(input: string): { canonical: string; slug: string; posts: PostMeta[] } | null {
+    const slug = slugify(input);
+    if (!slug) return null;
+    const matching = this.list().filter((p) => p.tags.some((t) => slugify(t) === slug));
+    if (matching.length === 0) return null;
+    const canonical = matching[0]!.tags.find((t) => slugify(t) === slug)!;
+    return { canonical, slug, posts: matching };
   }
 
   search(query: string, limit = 20): SearchHit[] {

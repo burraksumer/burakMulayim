@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { api, fmtLongDate } from "../../lib/api";
+import { api, fmtLongDate, slugify } from "../../lib/api";
 import { marked } from "marked";
 
 const { slug } = Astro.params;
@@ -48,10 +48,7 @@ const bodyHtml = await marked.parse(post.body);
               <ul class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs">
                 {post.tags.map((tag) => (
                   <li>
-                    <a
-                      href={`/tags/${encodeURIComponent(tag)}`}
-                      class="text-ink-3 hover:text-ink-1"
-                    >
+                    <a href={`/tags/${slugify(tag)}`} class="text-ink-3 hover:text-ink-1">
                       {tag}
                     </a>
                   </li>

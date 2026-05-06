@@ -1,5 +1,5 @@
-import type { DbClient } from "@burakMulayim/db";
-import { eq, schema } from "@burakMulayim/db";
+import type { DbClient } from "@burakmulayim/db";
+import { eq, schema } from "@burakmulayim/db";
 
 export type Fetcher<T> = () => Promise<T>;
 

@@ -1,20 +1,27 @@
 {
-  "name": "@burakMulayim/shared",
+  "name": "@burakmulayim/shared",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./schemas": "./src/schemas/index.ts"
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schemas": {
+      "types": "./src/schemas/index.ts",
+      "default": "./src/schemas/index.ts"
+    }
   },
   "scripts": {
-    "check-types": "tsc --noEmit -p ."
+    "check-types": "tsc --noEmit -p .",
+    "test": "bun test"
   },
   "dependencies": {
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@burakMulayim/config": "workspace:*",
+    "@burakmulayim/config": "workspace:*",
     "@types/bun": "catalog:",
     "typescript": "catalog:"
   }

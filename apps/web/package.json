@@ -7,11 +7,13 @@
     "dev": "bunx --bun astro dev",
     "build": "bunx --bun astro build",
     "preview": "bunx --bun astro preview",
-    "astro": "bunx --bun astro"
+    "astro": "bunx --bun astro",
+    "check-types": "bunx --bun astro check"
   },
   "dependencies": {
     "@astrojs/node": "^10.0.0-beta.9",
-    "@burakMulayim/env": "workspace:*",
+    "@burakmulayim/env": "workspace:*",
+    "@burakmulayim/shared": "workspace:*",
     "astro": "^6.0.1",
     "dotenv": "catalog:",
     "marked": "^18.0.3",
@@ -19,7 +21,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@burakMulayim/config": "workspace:*",
+    "@burakmulayim/config": "workspace:*",
     "@tailwindcss/vite": "^4.1.18",
     "tailwindcss": "^4.1.18",
     "typescript": "catalog:"

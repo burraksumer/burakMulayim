@@ -1,4 +1,4 @@
-import type { Post, PostMeta } from "@burakMulayim/shared";
+import type { Post, PostMeta } from "@burakmulayim/shared";
 
 export interface FeedSiteConfig {
   title: string;

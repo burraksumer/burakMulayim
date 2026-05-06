@@ -1,4 +1,4 @@
-import type { LastfmTrack } from "@burakMulayim/shared";
+import type { LastfmTrack } from "@burakmulayim/shared";
 
 export interface LastfmFetcherDeps {
   user: string;

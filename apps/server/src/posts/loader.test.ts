@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { resolve } from "node:path";
 
-import { PostListSchema, PostSchema } from "@burakMulayim/shared";
+import { PostListSchema, PostSchema } from "@burakmulayim/shared";
 
 import { loadPosts, parsePost } from "./loader";
 

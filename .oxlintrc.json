@@ -3,7 +3,8 @@
   "plugins": ["typescript", "unicorn", "oxc"],
   "jsPlugins": ["oxlint-tailwindcss"],
   "categories": {
-    "correctness": "error"
+    "correctness": "error",
+    "suspicious": "error"
   },
   "rules": {
     "tailwindcss/no-unnecessary-arbitrary-value": "error",
@@ -18,5 +19,13 @@
   },
   "env": {
     "builtin": true
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.ts"],
+      "rules": {
+        "unicorn/consistent-function-scoping": "off"
+      }
+    }
+  ]
 }

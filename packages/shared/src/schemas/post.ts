@@ -21,6 +21,8 @@ export const PostListSchema = z.array(PostMetaSchema);
 
 export const TagSchema = z.object({
   tag: z.string(),
+  /** URL-safe slug derived from the tag (lowercase, hyphenated, ASCII). */
+  slug: z.string(),
   count: z.number().int().nonnegative(),
 });
 

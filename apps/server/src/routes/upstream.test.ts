@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "bun:test";
 
-import { createDb, type DbClient } from "@burakMulayim/db";
-import { CarbonSchema, LastfmResponseSchema } from "@burakMulayim/shared";
+import { createDb, type DbClient } from "@burakmulayim/db";
+import { CarbonSchema, LastfmResponseSchema } from "@burakmulayim/shared";
 
 import { Cache } from "../cache";
 import { upstreamRoutes } from "./upstream";

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "bun:test";
 import { resolve } from "node:path";
 
-import { createDb, type DbClient } from "@burakMulayim/db";
+import { createDb, type DbClient } from "@burakmulayim/db";
 
 import { buildApp } from "./app";
 import { loadPosts } from "./posts/loader";

@@ -5,12 +5,12 @@
     "": {
       "name": "burak-mulayim",
       "dependencies": {
-        "@burakMulayim/env": "workspace:*",
+        "@burakmulayim/env": "workspace:*",
         "dotenv": "catalog:",
         "zod": "catalog:",
       },
       "devDependencies": {
-        "@burakMulayim/config": "workspace:*",
+        "@burakmulayim/config": "workspace:*",
         "@types/bun": "catalog:",
         "husky": "^9.1.7",
         "lint-staged": "^16.1.2",
@@ -26,9 +26,9 @@
     "apps/server": {
       "name": "server",
       "dependencies": {
-        "@burakMulayim/db": "workspace:*",
-        "@burakMulayim/env": "workspace:*",
-        "@burakMulayim/shared": "workspace:*",
+        "@burakmulayim/db": "workspace:*",
+        "@burakmulayim/env": "workspace:*",
+        "@burakmulayim/shared": "workspace:*",
         "@elysiajs/cors": "^1.4.1",
         "@sinclair/typebox": "^0.34.49",
         "dotenv": "catalog:",
@@ -37,7 +37,7 @@
         "zod": "catalog:",
       },
       "devDependencies": {
-        "@burakMulayim/config": "workspace:*",
+        "@burakmulayim/config": "workspace:*",
         "@types/bun": "catalog:",
         "tsdown": "^0.21.9",
         "typescript": "catalog:",
@@ -48,7 +48,8 @@
       "version": "0.0.1",
       "dependencies": {
         "@astrojs/node": "^10.0.0-beta.9",
-        "@burakMulayim/env": "workspace:*",
+        "@burakmulayim/env": "workspace:*",
+        "@burakmulayim/shared": "workspace:*",
         "astro": "^6.0.1",
         "dotenv": "catalog:",
         "marked": "^18.0.3",
@@ -56,32 +57,32 @@
       },
       "devDependencies": {
         "@astrojs/check": "^0.9.9",
-        "@burakMulayim/config": "workspace:*",
+        "@burakmulayim/config": "workspace:*",
         "@tailwindcss/vite": "^4.1.18",
         "tailwindcss": "^4.1.18",
         "typescript": "catalog:",
       },
     },
     "packages/config": {
-      "name": "@burakMulayim/config",
+      "name": "@burakmulayim/config",
       "version": "0.0.0",
     },
     "packages/db": {
-      "name": "@burakMulayim/db",
+      "name": "@burakmulayim/db",
       "dependencies": {
-        "@burakMulayim/env": "workspace:*",
+        "@burakmulayim/env": "workspace:*",
         "drizzle-orm": "^0.45.1",
         "zod": "catalog:",
       },
       "devDependencies": {
-        "@burakMulayim/config": "workspace:*",
+        "@burakmulayim/config": "workspace:*",
         "@types/bun": "catalog:",
         "drizzle-kit": "^0.31.8",
         "typescript": "catalog:",
       },
     },
     "packages/env": {
-      "name": "@burakMulayim/env",
+      "name": "@burakmulayim/env",
       "version": "0.0.0",
       "dependencies": {
         "@t3-oss/env-core": "^0.13.1",
@@ -89,19 +90,19 @@
         "zod": "catalog:",
       },
       "devDependencies": {
-        "@burakMulayim/config": "workspace:*",
+        "@burakmulayim/config": "workspace:*",
         "@types/bun": "catalog:",
         "typescript": "catalog:",
       },
     },
     "packages/shared": {
-      "name": "@burakMulayim/shared",
+      "name": "@burakmulayim/shared",
       "version": "0.0.0",
       "dependencies": {
         "zod": "catalog:",
       },
       "devDependencies": {
-        "@burakMulayim/config": "workspace:*",
+        "@burakmulayim/config": "workspace:*",
         "@types/bun": "catalog:",
         "typescript": "catalog:",
       },
@@ -144,13 +145,13 @@
 
     "@borewit/text-codec": ["@borewit/text-codec@0.2.2", "", {}, "sha512-DDaRehssg1aNrH4+2hnj1B7vnUGEjU6OIlyRdkMd0aUdIUvKXrJfXsy8LVtXAy7DRvYVluWbMspsRhz2lcW0mQ=="],
 
-    "@burakMulayim/config": ["@burakMulayim/config@workspace:packages/config"],
+    "@burakmulayim/config": ["@burakmulayim/config@workspace:packages/config"],
 
-    "@burakMulayim/db": ["@burakMulayim/db@workspace:packages/db"],
+    "@burakmulayim/db": ["@burakmulayim/db@workspace:packages/db"],
 
-    "@burakMulayim/env": ["@burakMulayim/env@workspace:packages/env"],
+    "@burakmulayim/env": ["@burakmulayim/env@workspace:packages/env"],
 
-    "@burakMulayim/shared": ["@burakMulayim/shared@workspace:packages/shared"],
+    "@burakmulayim/shared": ["@burakmulayim/shared@workspace:packages/shared"],
 
     "@capsizecss/unpack": ["@capsizecss/unpack@4.0.0", "", { "dependencies": { "fontkitten": "^1.0.0" } }, "sha512-VERIM64vtTP1C4mxQ5thVT9fK0apjPFobqybMtA1UdUujWka24ERHbRHFGmpbbhp73MhV+KSsHQH9C6uOTdEQA=="],
 
