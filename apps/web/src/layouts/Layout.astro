@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
 import SiteFooter from "../components/SiteFooter.astro";
 
 interface Props {
@@ -21,6 +22,7 @@ const { title = "Burak Sümer", description = "Personal blog and notes." } = Ast
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <title>{title}</title>
+    <ClientRouter />
   </head>
   <body class="flex min-h-screen flex-col">
     <div class="flex-1">
