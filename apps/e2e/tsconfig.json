@@ -1,0 +1,9 @@
+{
+  "extends": "@burakmulayim/config/tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "moduleResolution": "bundler",
+    "noEmit": true
+  },
+  "include": ["**/*.ts"]
+}

@@ -5,6 +5,9 @@ node_modules
 **/.cache
 **/coverage
 **/.astro
+**/playwright-report
+**/test-results
+**/blob-report
 bun.lock
 local.db
 local.db-wal

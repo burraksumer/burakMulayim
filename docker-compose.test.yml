@@ -1,0 +1,32 @@
+# Override applied alongside the base docker-compose.yml for e2e test runs.
+# Maps container ports to the host so Playwright (running on the host) can
+# reach the services, replaces the persistent SQLite volume with tmpfs for
+# hermetic per-run state, and overrides CORS to allow the localhost web origin.
+
+services:
+  server:
+    ports:
+      - "3000:3000"
+    volumes: !override
+      - type: tmpfs
+        target: /data
+        tmpfs:
+          mode: 0777
+    environment:
+      CORS_ORIGIN: http://localhost:4321
+    labels: !reset []
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        # Bake the docker-network server URL into the SSR bundle so api.ts
+        # (which inlines PUBLIC_SERVER_URL at build time) reaches the server
+        # container at runtime instead of the default localhost fallback.
+        PUBLIC_SERVER_URL: http://server:3000
+    ports:
+      - "4321:4321"
+    labels: !reset []
+
+volumes: !reset {}

@@ -28,6 +28,8 @@
     "check": "oxlint && oxfmt --write --ignore-path .gitignore && prettier --write .",
     "check:ci": "oxlint && oxfmt --check --ignore-path .gitignore && prettier --check .",
     "test": "bun run --filter '*' test",
+    "test:e2e": "bun run --filter e2e test:e2e:local",
+    "test:e2e:ui": "bun run --filter e2e test:e2e:ui",
     "prepare": "husky"
   },
   "dependencies": {

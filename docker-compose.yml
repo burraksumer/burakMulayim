@@ -41,6 +41,12 @@ services:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
+      args:
+        # Astro inlines PUBLIC_SERVER_URL at build time (see apps/web/astro.config.mjs).
+        # Bake the docker-network URL so SSR fetches in api.ts reach the server
+        # container at runtime; without this, the bundle hard-codes the localhost
+        # fallback and api.* calls inside the web container fail silently.
+        PUBLIC_SERVER_URL: http://server:3000
     expose:
       - "4321"
     environment:
@@ -50,6 +56,14 @@ services:
       server:
         condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      # 127.0.0.1 (not localhost) — Alpine resolves AAAA first, but the listener binds IPv4 only.
+      test: ["CMD", "wget", "-q", "-O-", "http://127.0.0.1:4321/healthz"]
+      interval: 30s # steady-state cadence after the app is healthy
+      timeout: 3s
+      retries: 3
+      start_period: 30s # grace window during startup
+      start_interval: 1s # poll every 1s during the grace window
     labels:
       - coolify.managed=true
       - coolify.proxy.host=burak.mulayim.app
