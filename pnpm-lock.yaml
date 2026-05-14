@@ -6,51 +6,51 @@ settings:
 
 dependencies:
   '@astrojs/image':
-    specifier: ^0.13.0
+    specifier: ^0.13.1
     version: 0.13.1(astro@3.1.0)(sharp@0.31.3)
   '@astrojs/partytown':
-    specifier: ^1.0.3
+    specifier: ^1.2.3
     version: 1.2.3
   '@astrojs/prefetch':
-    specifier: ^0.1.1
+    specifier: ^0.1.2
     version: 0.1.2
   '@astrojs/rss':
-    specifier: ^2.1.0
+    specifier: ^2.4.4
     version: 2.4.4
   '@astrojs/sitemap':
-    specifier: ^1.0.0
+    specifier: ^1.4.0
     version: 1.4.0
   '@astrojs/tailwind':
     specifier: ^5.0.0
     version: 5.0.0(astro@3.1.0)(tailwindcss@3.3.3)
   '@tailwindcss/line-clamp':
-    specifier: ^0.4.2
+    specifier: ^0.4.4
     version: 0.4.4(tailwindcss@3.3.3)
   astro:
     specifier: ^3.1.0
     version: 3.1.0
   astro-icon:
-    specifier: ^0.8.0
+    specifier: ^0.8.1
     version: 0.8.1
   astro-robots-txt:
-    specifier: ^0.3.11
+    specifier: ^0.3.12
     version: 0.3.12
   markdown-it:
     specifier: ^13.0.1
     version: 13.0.1
   sanitize-html:
-    specifier: ^2.8.1
+    specifier: ^2.11.0
     version: 2.11.0
   sharp:
     specifier: ^0.31.3
     version: 0.31.3
   tailwindcss:
-    specifier: ^3.2.4
+    specifier: ^3.3.3
     version: 3.3.3
 
 devDependencies:
   '@tailwindcss/typography':
-    specifier: ^0.5.9
+    specifier: ^0.5.10
     version: 0.5.10(tailwindcss@3.3.3)
 
 packages:
@@ -1125,7 +1125,7 @@ packages:
       yargs-parser: 21.1.1
       zod: 3.21.1
     optionalDependencies:
-      sharp: 0.32.5
+      sharp: 0.32.6
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -1208,8 +1208,8 @@ packages:
       wrap-ansi: 8.1.0
     dev: false
 
-  /brace-expansion@1.1.11:
-    resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
+  /brace-expansion@1.1.14:
+    resolution: {integrity: sha512-MWPGfDxnyzKU7rNOW9SP/c50vi3xrmrua/+6hfPbCS2ABNWfx24vPidzvC7krjU/RTo235sV776ymlsMtGKj8g==}
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
@@ -2738,7 +2738,7 @@ packages:
   /minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
     dependencies:
-      brace-expansion: 1.1.11
+      brace-expansion: 1.1.14
 
   /minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
@@ -3410,8 +3410,8 @@ packages:
       tunnel-agent: 0.6.0
     dev: false
 
-  /sharp@0.32.5:
-    resolution: {integrity: sha512-0dap3iysgDkNaPOaOL4X/0akdu0ma62GcdC2NBQ+93eqpePdDdr2/LM0sFdDSMmN7yS+odyZtPsb7tx/cYBKnQ==}
+  /sharp@0.32.6:
+    resolution: {integrity: sha512-KyLTWwgcR9Oe4d9HwCwNM2l7+J0dUQwn/yf7S0EnTtb0eVS4RxO0eUSvxPtzT4F3SY+C4K6fqdv/DO27sJ/v/w==}
     engines: {node: '>=14.15.0'}
     requiresBuild: true
     dependencies:
