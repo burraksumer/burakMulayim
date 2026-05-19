@@ -9,6 +9,18 @@ interface Props {
 }
 
 const { title = "Burak Sümer", description = "Personal blog and notes." } = Astro.props;
+
+// Canonical URL for this page. `Astro.site` is configured in astro.config.mjs
+// to the apex public domain; here we layer the current path onto it. This
+// gives every page a stable canonical regardless of how it was reached
+// (with/without query string, via redirect, etc.).
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+// Feeds are served on the apex (proxied through to the API by
+// apps/web/src/pages/feed.xml.ts and feed.json.ts). Same-origin links are
+// friendlier to feed readers and easier for browsers to autodiscover.
+const feedXml = new URL("/feed.xml", Astro.site).href;
+const feedJson = new URL("/feed.json", Astro.site).href;
 ---
 
 <!doctype html>
@@ -17,6 +29,9 @@ const { title = "Burak Sümer", description = "Personal blog and notes." } = Ast
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title="Burak Sümer" href={feedXml} />
+    <link rel="alternate" type="application/feed+json" title="Burak Sümer" href={feedJson} />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />

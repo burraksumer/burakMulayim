@@ -1,0 +1,67 @@
+import { test, expect } from "@playwright/test";
+
+// Crawler / discoverability surfaces served by the web app on the apex
+// domain. These are concerns that cut across every page (canonical, feed
+// autodiscovery) plus a couple of well-known root paths (robots.txt,
+// sitemap.xml). Kept in their own file so they don't get lost inside the
+// per-page specs.
+
+test("/robots.txt returns 200 and points at the sitemap", async ({ request }) => {
+  const res = await request.get("/robots.txt");
+  expect(res.status()).toBe(200);
+  const body = await res.text();
+  expect(body).toMatch(/User-agent:\s*\*/i);
+  expect(body).toMatch(/Sitemap:\s*https:\/\/.+\/sitemap\.xml/);
+});
+
+test("/sitemap.xml on the apex proxies the API and returns XML", async ({ request }) => {
+  const res = await request.get("/sitemap.xml");
+  expect(res.status()).toBe(200);
+  expect(res.headers()["content-type"]).toMatch(/xml/);
+  const body = await res.text();
+  expect(body).toMatch(/<\?xml/);
+  expect(body).toMatch(/<urlset|<sitemapindex/);
+});
+
+test("/feed.xml on the apex proxies the API and returns RSS", async ({ request }) => {
+  const res = await request.get("/feed.xml");
+  expect(res.status()).toBe(200);
+  expect(res.headers()["content-type"]).toMatch(/rss\+xml/);
+  const body = await res.text();
+  expect(body).toMatch(/<\?xml/);
+  expect(body).toMatch(/<rss|<feed/i);
+});
+
+test("/feed.json on the apex proxies the API and returns JSON Feed", async ({ request }) => {
+  const res = await request.get("/feed.json");
+  expect(res.status()).toBe(200);
+  expect(res.headers()["content-type"]).toMatch(/feed\+json/);
+  const body = (await res.json()) as { version: string; title: string; items: unknown[] };
+  expect(body.version).toMatch(/jsonfeed/);
+  expect(body.title.length).toBeGreaterThan(0);
+  expect(Array.isArray(body.items)).toBe(true);
+});
+
+test("every page has a canonical link in <head>", async ({ page }) => {
+  // Sample a few representative routes; the link is rendered by Layout.astro
+  // so testing any one page proves the layer, but spot-checking a couple
+  // catches accidental Layout-bypass regressions.
+  for (const path of ["/", "/about", "/posts"]) {
+    await page.goto(path);
+    const canonical = page.locator('link[rel="canonical"]');
+    await expect(canonical).toHaveCount(1);
+    const href = await canonical.getAttribute("href");
+    expect(href).toMatch(/^https:\/\/.+/);
+    expect(href).toContain(path === "/" ? "/" : path);
+  }
+});
+
+test("every page advertises RSS and JSON feeds via <link rel=alternate>", async ({ page }) => {
+  await page.goto("/");
+  const rss = page.locator('link[rel="alternate"][type="application/rss+xml"]');
+  const jsonFeed = page.locator('link[rel="alternate"][type="application/feed+json"]');
+  await expect(rss).toHaveCount(1);
+  await expect(jsonFeed).toHaveCount(1);
+  expect(await rss.getAttribute("href")).toMatch(/\/feed\.xml$/);
+  expect(await jsonFeed.getAttribute("href")).toMatch(/\/feed\.json$/);
+});
