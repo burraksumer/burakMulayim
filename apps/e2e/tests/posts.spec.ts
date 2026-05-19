@@ -19,3 +19,15 @@ test("posts index lists posts; clicking the first navigates to post detail", asy
   // PageMain component) — stable, present on every page.
   await expect(page.locator("main")).toBeVisible();
 });
+
+test("post detail page renders substantive body content", async ({ page }) => {
+  // Walk to the first post and assert its rendered body has meaningful
+  // length — not just the layout chrome (breadcrumb, header, footer). The
+  // 200-char threshold is well below any real post body but well above the
+  // layout text that would render even with an empty post.
+  await page.goto("/posts");
+  await page.locator('a[href^="/posts/"]').first().click();
+  await page.waitForURL(/\/posts\/[^/]+\/?$/);
+  const bodyText = await page.locator("main").innerText();
+  expect(bodyText.length).toBeGreaterThan(200);
+});

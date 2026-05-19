@@ -31,6 +31,17 @@ test("clicking a tag from /tags navigates to a tag page that returns 200", async
   await expect(page.locator("h1")).toBeVisible();
 });
 
+test("tag detail page lists at least one post linking back to /posts/<slug>", async ({ page }) => {
+  // Every tag page exists because at least one post is tagged with it (the
+  // index is derived from posts). So a tag page without post links would
+  // mean the tag-to-posts join broke server-side.
+  await page.goto("/tags");
+  await page.locator('a[href^="/tags/"]').first().click();
+  await page.waitForURL(/\/tags\/[^/]+\/?$/);
+  const postLinks = page.locator('a[href^="/posts/"]');
+  expect(await postLinks.count()).toBeGreaterThan(0);
+});
+
 test("tag links rendered via TagList on a post detail page also have valid slugs", async ({
   page,
 }) => {

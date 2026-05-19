@@ -69,5 +69,29 @@ services:
       - coolify.proxy.host=burak.mulayim.app
       - coolify.proxy.port=4321
 
+  # E2E test runner — opt-in via `--profile test`. Coolify ignores profiled
+  # services, so production deploys are untouched. Lives on the same Docker
+  # network as web/server, so it reaches them by service name (no host port
+  # mapping or CORS overrides needed).
+  e2e:
+    profiles: [test]
+    build:
+      context: .
+      dockerfile: apps/e2e/Dockerfile
+    volumes:
+      # Capture the HTML report and per-test artifacts on the host so they
+      # survive `--rm` and can be opened with `bunx playwright show-report`.
+      - ./apps/e2e/playwright-report:/app/apps/e2e/playwright-report
+      - ./apps/e2e/test-results:/app/apps/e2e/test-results
+    depends_on:
+      web:
+        condition: service_healthy
+      server:
+        condition: service_healthy
+    environment:
+      BASE_URL: http://web:4321
+      API_BASE_URL: http://server:3000
+      CI: "true"
+
 volumes:
   data:
