@@ -98,3 +98,35 @@ test("404 page sets robots noindex; normal pages do not", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
 });
+
+test("post pages emit a BlogPosting JSON-LD block", async ({ page }) => {
+  // Pick any post in the fixtures; switch-to-astro is one we already use in
+  // other specs so it's known-present.
+  await page.goto("/posts/switch-to-astro");
+  const script = page.locator('script[type="application/ld+json"]');
+  await expect(script).toHaveCount(1);
+
+  const raw = await script.textContent();
+  expect(raw).not.toBeNull();
+  // Must be parseable; an unparseable block is invisible to crawlers AND a
+  // Google Search Console warning waiting to happen.
+  const parsed = JSON.parse(raw!) as {
+    "@context": string;
+    "@type": string;
+    headline: string;
+    url: string;
+  };
+  expect(parsed["@context"]).toBe("https://schema.org");
+  expect(parsed["@type"]).toBe("BlogPosting");
+  expect(parsed.headline.length).toBeGreaterThan(0);
+  expect(parsed.url).toContain("/posts/switch-to-astro");
+});
+
+test("non-post pages do not emit a JSON-LD script", async ({ page }) => {
+  // BlogPosting JSON-LD is article-specific; emitting it on index/about/etc.
+  // is wrong and would confuse Google about page intent.
+  for (const path of ["/", "/about", "/posts"]) {
+    await page.goto(path);
+    await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(0);
+  }
+});

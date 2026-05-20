@@ -8,6 +8,7 @@ import PageHeader from "../../components/PageHeader.astro";
 import PageMain from "../../components/PageMain.astro";
 import TagList from "../../components/TagList.astro";
 import { api } from "../../lib/api";
+import { buildArticleJsonLd } from "../../lib/post-jsonld";
 import { marked } from "marked";
 
 const { slug } = Astro.params;
@@ -21,6 +22,14 @@ if (!post) {
 // Configure marked: GitHub-flavored markdown, no smart-everything quirks.
 marked.setOptions({ gfm: true, breaks: false });
 const bodyHtml = await marked.parse(post.body);
+
+// Structured data for search engines. Emits a BlogPosting JSON-LD block;
+// drives rich SERP results (date stamp, byline, thumbnail) on Google + Bing.
+const jsonld = buildArticleJsonLd(post, {
+  siteUrl: Astro.site!.href,
+  authorName: "Burak Sümer",
+  authorUrl: Astro.site!.href,
+});
 ---
 
 <Layout
@@ -54,4 +63,6 @@ const bodyHtml = await marked.parse(post.body);
       <MarkdownBody html={bodyHtml} />
     </article>
   </PageMain>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
 </Layout>
