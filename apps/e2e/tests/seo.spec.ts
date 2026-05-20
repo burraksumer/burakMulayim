@@ -86,3 +86,15 @@ test("every page sets theme-color meta to the ink background", async ({ page }) 
   const themeColor = page.locator('meta[name="theme-color"]');
   await expect(themeColor).toHaveAttribute("content", "#0c0b0a");
 });
+
+test("404 page sets robots noindex; normal pages do not", async ({ page }) => {
+  // /404 is technically crawlable; we don't want it indexed as a "Not found"
+  // search result.
+  await page.goto("/this-page-does-not-exist");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex");
+
+  // Inverse: a normal page must NOT emit the noindex (otherwise we'd hide
+  // everything from search by accident).
+  await page.goto("/");
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+});

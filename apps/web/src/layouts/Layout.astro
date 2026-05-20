@@ -27,6 +27,12 @@ interface Props {
    * per-post images.
    */
   ogImage?: string;
+  /**
+   * `robots` meta directive. Defaults to undefined (no meta emitted = crawlers
+   * use their defaults, which is "index, follow"). Set to "noindex" on pages
+   * that shouldn't appear in search — e.g., the 404 page.
+   */
+  robots?: string;
 }
 
 const {
@@ -34,6 +40,7 @@ const {
   description = "Personal blog and notes.",
   article,
   ogImage = "/og/default.png",
+  robots,
 } = Astro.props;
 
 // Canonical URL for this page. `Astro.site` is configured in astro.config.mjs
@@ -69,6 +76,7 @@ const ogType = article ? "article" : "website";
     <link rel="alternate" type="application/feed+json" title="Burak Sümer" href={feedJson} />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+    {robots && <meta name="robots" content={robots} />}
     {
       /* Mobile browser chrome (Chrome address bar on Android, iOS status bar
         backdrop on Safari) tints to this. Same value as --color-ink-bg so
