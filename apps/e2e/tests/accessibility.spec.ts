@@ -20,6 +20,7 @@ test("skip link is the first focusable element on the page", async ({ page }) =>
   // Tab once from the body should land on the skip link. If anything else
   // is tab-focusable before it (a nav, a header link, etc.) this fails.
   await page.keyboard.press("Tab");
-  const focusedText = await page.evaluate(() => document.activeElement?.textContent?.trim());
-  expect(focusedText).toBe("Skip to content");
+  // Playwright's `:focus` pseudo-class targets the currently-focused element
+  // — avoids reaching for `document` in the test runner's Node context.
+  await expect(page.locator(":focus")).toHaveText("Skip to content");
 });
