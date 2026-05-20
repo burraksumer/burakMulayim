@@ -78,3 +78,11 @@ test("every page advertises RSS and JSON feeds via <link rel=alternate>", async 
   expect(await rss.getAttribute("href")).toMatch(/\/feed\.xml$/);
   expect(await jsonFeed.getAttribute("href")).toMatch(/\/feed\.json$/);
 });
+
+test("every page sets theme-color meta to the ink background", async ({ page }) => {
+  await page.goto("/");
+  // Single source of truth lives in Layout.astro; if this drifts, mobile
+  // browser chrome stops matching the page surface.
+  const themeColor = page.locator('meta[name="theme-color"]');
+  await expect(themeColor).toHaveAttribute("content", "#0c0b0a");
+});
