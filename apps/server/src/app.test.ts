@@ -32,6 +32,7 @@ const buildTestApp = (origin: string | string[]) =>
     store,
     site: SITE,
     contentDir: FIXTURES, // /now route uses this; tests don't hit it directly
+    ogCacheDir: "/tmp/og-cache-test", // /og route uses this; tests don't hit it directly
     corsOrigin: origin,
     carbonTtlMs: 60_000,
     lastfmTtlMs: 60_000,

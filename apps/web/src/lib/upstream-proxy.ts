@@ -29,7 +29,10 @@ export async function proxyUpstream({
     if (!res.ok) {
       return new Response(`upstream ${path} unavailable`, { status: 502 });
     }
-    const body = await res.text();
+    // arrayBuffer (not text) so this helper handles binary upstreams (PNGs,
+    // images) as well as text (XML, JSON). Response body works the same way;
+    // the client-side content-type header drives parsing.
+    const body = await res.arrayBuffer();
     return new Response(body, {
       status: 200,
       headers: {

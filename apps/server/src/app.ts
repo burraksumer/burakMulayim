@@ -7,6 +7,7 @@ import { Cache, type Fetcher } from "./cache";
 import type { FeedSiteConfig } from "./feeds";
 import { feedRoutes } from "./routes/feeds";
 import { nowRoutes } from "./routes/now";
+import { ogRoutes } from "./routes/og";
 import { postRoutes } from "./routes/posts";
 import { searchRoutes } from "./routes/search";
 import { upstreamRoutes } from "./routes/upstream";
@@ -18,6 +19,8 @@ export interface AppDeps {
   site: FeedSiteConfig;
   /** Directory holding markdown content (posts and now.md). */
   contentDir: string;
+  /** Persistent directory for cached OG PNGs (lives on the data volume). */
+  ogCacheDir: string;
   corsOrigin: string | string[];
   carbonTtlMs: number;
   lastfmTtlMs: number;
@@ -56,5 +59,6 @@ export function buildApp(deps: AppDeps) {
     .use(postRoutes({ store: deps.store }))
     .use(nowRoutes({ contentDir: deps.contentDir }))
     .use(feedRoutes({ store: deps.store, site: deps.site }))
+    .use(ogRoutes({ store: deps.store, cacheDir: deps.ogCacheDir }))
     .use(searchRoutes({ store: deps.store }));
 }

@@ -23,7 +23,16 @@ marked.setOptions({ gfm: true, breaks: false });
 const bodyHtml = await marked.parse(post.body);
 ---
 
-<Layout title={`${post.title} — Burak Sümer`} description={post.description ?? post.excerpt}>
+<Layout
+  title={`${post.title} — Burak Sümer`}
+  description={post.description ?? post.excerpt}
+  ogImage={`/og/${post.slug}.png`}
+  article={{
+    publishedTime: post.date,
+    author: "Burak Sümer",
+    tags: post.tags,
+  }}
+>
   <PageMain>
     <Breadcrumb
       trail={[

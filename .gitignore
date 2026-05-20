@@ -55,5 +55,9 @@ temp
 *.db-shm
 *.db-wal
 
+# OG image disk cache (runtime artifact, written next to the SQLite DB —
+# `apps/server/og/` in dev, `/data/og/` in the container)
+apps/server/og
+
 # Local Compose overrides (host port mappings, etc.) — not for production
 docker-compose.override.yml

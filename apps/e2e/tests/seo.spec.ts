@@ -42,6 +42,19 @@ test("/feed.json on the apex proxies the API and returns JSON Feed", async ({ re
   expect(Array.isArray(body.items)).toBe(true);
 });
 
+test("/og/default.png on the apex proxies the API and returns a PNG", async ({ request }) => {
+  const res = await request.get("/og/default.png");
+  expect(res.status()).toBe(200);
+  expect(res.headers()["content-type"]).toBe("image/png");
+  const buf = await res.body();
+  // PNG magic number — first four bytes are 89 50 4E 47.
+  expect(buf[0]).toBe(0x89);
+  expect(buf[1]).toBe(0x50);
+  expect(buf[2]).toBe(0x4e);
+  expect(buf[3]).toBe(0x47);
+  expect(buf.byteLength).toBeGreaterThan(1000);
+});
+
 test("every page has a canonical link in <head>", async ({ page }) => {
   // Sample a few representative routes; the link is rendered by Layout.astro
   // so testing any one page proves the layer, but spot-checking a couple

@@ -3,12 +3,38 @@ import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import SiteFooter from "../components/SiteFooter.astro";
 
+interface ArticleMeta {
+  /** ISO date string. Renders as og:article:published_time. */
+  publishedTime: string;
+  /** Display name for og:article:author. */
+  author?: string;
+  /** Each tag renders as a separate og:article:tag meta. */
+  tags?: string[];
+}
+
 interface Props {
   title?: string;
   description?: string;
+  /**
+   * When set, the page is treated as an article: og:type flips to "article"
+   * and the article-specific og:article:* meta tags are emitted. Leave undefined
+   * for landing/index/non-post pages.
+   */
+  article?: ArticleMeta;
+  /**
+   * Absolute or root-relative URL for the social-preview image. Defaults to
+   * the site-wide og-default.png. Override per-page if you ever generate
+   * per-post images.
+   */
+  ogImage?: string;
 }
 
-const { title = "Burak Sümer", description = "Personal blog and notes." } = Astro.props;
+const {
+  title = "Burak Sümer",
+  description = "Personal blog and notes.",
+  article,
+  ogImage = "/og/default.png",
+} = Astro.props;
 
 // Canonical URL for this page. `Astro.site` is configured in astro.config.mjs
 // to the apex public domain; here we layer the current path onto it. This
@@ -16,11 +42,17 @@ const { title = "Burak Sümer", description = "Personal blog and notes." } = Ast
 // (with/without query string, via redirect, etc.).
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
+// Absolute URL for og:image — most social platforms require absolute,
+// not root-relative, even though the spec allows both.
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+
 // Feeds are served on the apex (proxied through to the API by
 // apps/web/src/pages/feed.xml.ts and feed.json.ts). Same-origin links are
 // friendlier to feed readers and easier for browsers to autodiscover.
 const feedXml = new URL("/feed.xml", Astro.site).href;
 const feedJson = new URL("/feed.json", Astro.site).href;
+
+const ogType = article ? "article" : "website";
 ---
 
 <!doctype html>
@@ -37,8 +69,40 @@ const feedJson = new URL("/feed.json", Astro.site).href;
     <link rel="alternate" type="application/feed+json" title="Burak Sümer" href={feedJson} />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+
+    {/* Open Graph */}
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Burak Sümer" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    {
+      /* Twitter Card — uses og:* fallbacks for most fields; explicit twitter:* tags
+        give finer control on platforms that read them. */
+    }
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {/* Article-only meta (post pages) */}
+    {
+      article && (
+        <>
+          <meta property="article:published_time" content={article.publishedTime} />
+          {article.author && <meta property="article:author" content={article.author} />}
+          {article.tags?.map((tag) => (
+            <meta property="article:tag" content={tag} />
+          ))}
+        </>
+      )
+    }
+
     <title>{title}</title>
     <ClientRouter />
   </head>

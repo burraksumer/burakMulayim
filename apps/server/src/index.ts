@@ -1,4 +1,4 @@
-import { dirname, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 
 import { createDb } from "@burakmulayim/db";
 import { env } from "@burakmulayim/env/server";
@@ -27,10 +27,16 @@ async function main() {
   const carbon = carbonFetcher({ url: env.WEBSITECARBON_URL, green: env.WEBSITECARBON_GREEN });
   const lastfm = lastfmFetcher({ user: env.LASTFM_USER, apiKey: env.LASTFM_API_KEY });
 
+  // OG-card disk cache lives next to the SQLite DB on the persistent volume.
+  // This keeps caches across container restarts but lets you blow away one
+  // PNG (rm /data/og/<slug>.png) to force a re-render after editing a post.
+  const ogCacheDir = join(dirname(env.DATABASE_URL), "og");
+
   const app = buildApp({
     db,
     store,
     contentDir,
+    ogCacheDir,
     corsOrigin: env.CORS_ORIGIN,
     carbonTtlMs: CARBON_TTL_MS,
     lastfmTtlMs: LASTFM_TTL_MS,
