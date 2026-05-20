@@ -10,6 +10,6 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<main class:list={["mx-auto w-full max-w-2xl px-6 py-20 sm:py-28", className]}>
+<main id="main" class:list={["mx-auto w-full max-w-2xl px-6 py-20 sm:py-28", className]}>
   <slot />
 </main>
