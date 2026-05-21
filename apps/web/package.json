@@ -12,10 +12,10 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@astrojs/node": "^10.0.0-beta.9",
+    "@astrojs/node": "^10.1.1",
     "@burakmulayim/env": "workspace:*",
     "@burakmulayim/shared": "workspace:*",
-    "astro": "^6.0.1",
+    "astro": "^6.3.6",
     "dotenv": "catalog:",
     "marked": "^18.0.3",
     "zod": "catalog:"
