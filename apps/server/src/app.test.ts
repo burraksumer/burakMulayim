@@ -22,7 +22,7 @@ const SITE = {
 
 beforeEach(async () => {
   db = createDb();
-  store = new PostStore(db);
+  store = new PostStore();
   store.setAll(await loadPosts({ dir: FIXTURES }));
 });
 

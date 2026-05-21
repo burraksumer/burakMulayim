@@ -17,7 +17,7 @@ const LASTFM_POLL_MS = LASTFM_TTL_MS;
 async function main() {
   const db = createDb({ url: env.DATABASE_URL });
 
-  const store = new PostStore(db);
+  const store = new PostStore();
   const postsDir = resolve(process.cwd(), env.POSTS_DIR);
   const contentDir = dirname(postsDir);
   const posts = await loadPosts({ dir: postsDir });

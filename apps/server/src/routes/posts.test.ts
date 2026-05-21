@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it } from "bun:test";
 import { resolve } from "node:path";
 
-import { createDb, type DbClient } from "@burakmulayim/db";
 import { PostListSchema, PostSchema, TagListSchema } from "@burakmulayim/shared";
 
 import { loadPosts } from "../posts/loader";
@@ -10,12 +9,10 @@ import { postRoutes } from "./posts";
 
 const FIXTURES = resolve(import.meta.dir, "../../test/fixtures/posts");
 
-let db: DbClient;
 let store: PostStore;
 
 beforeEach(async () => {
-  db = createDb();
-  store = new PostStore(db);
+  store = new PostStore();
   store.setAll(await loadPosts({ dir: FIXTURES }));
 });
 

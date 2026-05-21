@@ -3,21 +3,17 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve, join } from "node:path";
 
-import { createDb, type DbClient } from "@burakmulayim/db";
-
 import { loadPosts } from "../posts/loader";
 import { PostStore } from "../posts/store";
 import { ogRoutes } from "./og";
 
 const FIXTURES = resolve(import.meta.dir, "../../test/fixtures/posts");
 
-let db: DbClient;
 let store: PostStore;
 let cacheDir: string;
 
 beforeEach(async () => {
-  db = createDb();
-  store = new PostStore(db);
+  store = new PostStore();
   store.setAll(await loadPosts({ dir: FIXTURES }));
   // Hermetic tmp cache per test so disk-cache side effects don't leak
   // between cases.

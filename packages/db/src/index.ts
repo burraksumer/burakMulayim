@@ -1,4 +1,7 @@
 import { Database } from "bun:sqlite";
+import { createRequire } from "node:module";
+import { dirname, resolve } from "node:path";
+
 import { drizzle } from "drizzle-orm/bun-sqlite";
 
 import { migrate } from "./migrate";
@@ -13,7 +16,26 @@ export interface DbClient {
 
 export interface CreateDbOptions {
   url?: string;
+  /** Run migrations on the new DB. Default `true`. */
   migrate?: boolean;
+  /**
+   * Override the migrations folder. Default: auto-resolved to
+   * `packages/db/src/migrations/` via Node module resolution. Useful for
+   * tests that want to point at a fixture folder or skip discovery.
+   */
+  migrationsFolder?: string;
+}
+
+// Resolve the migrations folder lazily so tests can override before this
+// runs. Uses createRequire to find @burakmulayim/db's package.json — which
+// is THIS package — then walks to the sibling `src/migrations` folder.
+// Works in dev (import.meta.url points at packages/db/src/index.ts) AND in
+// production (the bundled server's createRequire still resolves via the
+// workspace-symlinked node_modules tree).
+function defaultMigrationsFolder(): string {
+  const require = createRequire(import.meta.url);
+  const pkgJson = require.resolve("@burakmulayim/db/package.json");
+  return resolve(dirname(pkgJson), "src/migrations");
 }
 
 export function createDb(options: CreateDbOptions = {}): DbClient {
@@ -22,7 +44,8 @@ export function createDb(options: CreateDbOptions = {}): DbClient {
   sqlite.exec("PRAGMA synchronous = NORMAL;");
   sqlite.exec("PRAGMA foreign_keys = ON;");
   if (options.migrate !== false) {
-    migrate(sqlite);
+    const folder = options.migrationsFolder ?? defaultMigrationsFolder();
+    migrate(sqlite, folder);
   }
   return { drizzle: drizzle(sqlite, { schema }), sqlite };
 }

@@ -1,4 +1,3 @@
-import type { DbClient } from "@burakmulayim/db";
 import type { Post, PostMeta, SearchHit, Tag } from "@burakmulayim/shared";
 import { slugify } from "@burakmulayim/shared";
 
@@ -7,21 +6,11 @@ import { toMeta } from "./loader";
 export class PostStore {
   private bySlug = new Map<string, Post>();
 
-  constructor(private db: DbClient) {}
-
   setAll(posts: Post[]) {
     this.bySlug.clear();
-    this.db.sqlite.exec("DELETE FROM posts_fts;");
-    const insert = this.db.sqlite.prepare(
-      "INSERT INTO posts_fts (slug, title, body, tags) VALUES (?, ?, ?, ?)",
-    );
-    const tx = this.db.sqlite.transaction((rows: Post[]) => {
-      for (const p of rows) {
-        insert.run(p.slug, p.title, p.body, p.tags.join(" "));
-        this.bySlug.set(p.slug, p);
-      }
-    });
-    tx(posts);
+    for (const p of posts) {
+      this.bySlug.set(p.slug, p);
+    }
   }
 
   list(): PostMeta[] {
@@ -60,35 +49,88 @@ export class PostStore {
     return { canonical, slug, posts: matching };
   }
 
+  /**
+   * In-memory search over title, body, and tags. Case-insensitive substring
+   * matching with OR semantics across terms; ranked by a coarse score
+   * (title > tag > body). Snippets built around the first matched term
+   * in the body, with the match wrapped in `<mark>`.
+   *
+   * Trade vs the prior FTS5 implementation: no stemming, no BM25 ranking,
+   * no fuzzy matching. Acceptable at this scale (handful of posts loaded
+   * into memory at boot). If search ever becomes a hotspot or quality
+   * matters more, switch back to FTS5 — the route + return shape stays
+   * the same.
+   */
   search(query: string, limit = 20): SearchHit[] {
     const trimmed = query.trim();
     if (trimmed.length === 0) return [];
-    const ftsQuery = trimmed
+
+    const terms = trimmed
       .split(/\s+/u)
-      .filter((t) => t.length > 0)
-      .map((t) => `"${t.replace(/"/gu, '""')}"`)
-      .join(" OR ");
-    if (ftsQuery.length === 0) return [];
+      .map((t) => t.toLowerCase())
+      .filter((t) => t.length > 0);
+    if (terms.length === 0) return [];
 
-    type Row = { slug: string; score: number; snippet: string };
-    let rows: Row[];
-    try {
-      rows = this.db.sqlite
-        .query<Row, [string, number]>(
-          `SELECT slug, bm25(posts_fts) AS score, snippet(posts_fts, 2, '<mark>', '</mark>', '…', 12) AS snippet
-           FROM posts_fts WHERE posts_fts MATCH ? ORDER BY score LIMIT ?`,
-        )
-        .all(ftsQuery, limit);
-    } catch {
-      return [];
+    type Scored = { post: Post; score: number; snippet: string };
+    const scored: Scored[] = [];
+
+    for (const post of this.bySlug.values()) {
+      const titleLower = post.title.toLowerCase();
+      const bodyLower = post.body.toLowerCase();
+      const tagsLower = post.tags.join(" ").toLowerCase();
+
+      let score = 0;
+      let snippetTerm: string | undefined;
+
+      for (const term of terms) {
+        // Coarse field weighting: title beats tag beats body. Each field
+        // counts once per term — multiple matches in the same field don't
+        // dominate the ranking.
+        if (titleLower.includes(term)) score += 3;
+        if (tagsLower.includes(term)) score += 2;
+        if (bodyLower.includes(term)) {
+          score += 1;
+          if (!snippetTerm) snippetTerm = term;
+        }
+      }
+
+      if (score > 0) {
+        // Snippet falls back to the post's excerpt when matches were only
+        // in title/tags — keeps the hit row from being snippet-less.
+        const snippet = snippetTerm ? buildSnippet(post.body, snippetTerm) : post.excerpt;
+        scored.push({ post, score, snippet });
+      }
     }
 
-    const hits: SearchHit[] = [];
-    for (const r of rows) {
-      const post = this.bySlug.get(r.slug);
-      if (!post) continue;
-      hits.push({ ...toMeta(post), score: r.score, snippet: r.snippet });
-    }
-    return hits;
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, limit).map(({ post, score, snippet }) => ({
+      ...toMeta(post),
+      score,
+      snippet,
+    }));
   }
+}
+
+const SNIPPET_CONTEXT = 40;
+
+/**
+ * Build a snippet around the first occurrence of `term` (lowercase, already
+ * trimmed) in `body`. The matched substring is wrapped in `<mark>` using its
+ * original casing. Leading/trailing ellipses indicate truncation.
+ */
+function buildSnippet(body: string, term: string): string {
+  const lower = body.toLowerCase();
+  const idx = lower.indexOf(term);
+  if (idx === -1) return body.slice(0, SNIPPET_CONTEXT * 2);
+
+  const start = Math.max(0, idx - SNIPPET_CONTEXT);
+  const end = Math.min(body.length, idx + term.length + SNIPPET_CONTEXT);
+  const slice = body.slice(start, end);
+  const offsetInSlice = idx - start;
+  const matched = slice.slice(offsetInSlice, offsetInSlice + term.length);
+  const wrapped =
+    slice.slice(0, offsetInSlice) +
+    `<mark>${matched}</mark>` +
+    slice.slice(offsetInSlice + term.length);
+  return (start > 0 ? "…" : "") + wrapped + (end < body.length ? "…" : "");
 }

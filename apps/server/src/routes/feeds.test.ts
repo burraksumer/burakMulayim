@@ -1,8 +1,6 @@
 import { beforeEach, describe, expect, it } from "bun:test";
 import { resolve } from "node:path";
 
-import { createDb, type DbClient } from "@burakmulayim/db";
-
 import { loadPosts } from "../posts/loader";
 import { PostStore } from "../posts/store";
 import { feedRoutes } from "./feeds";
@@ -19,12 +17,10 @@ const SITE = {
   language: "en",
 };
 
-let db: DbClient;
 let store: PostStore;
 
 beforeEach(async () => {
-  db = createDb();
-  store = new PostStore(db);
+  store = new PostStore();
   store.setAll(await loadPosts({ dir: FIXTURES }));
 });
 
