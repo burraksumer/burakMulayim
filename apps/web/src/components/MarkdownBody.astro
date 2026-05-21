@@ -1,11 +1,13 @@
 ---
 /**
- * Renders pre-parsed markdown HTML with the site's editorial typography:
- * serif headings, mono code, warm-gray rules, restrained spacing.
+ * Renders pre-parsed markdown HTML inside Tailwind's typography ("prose")
+ * styles. Palette + typography overrides live in global.css so every
+ * markdown-rendering surface (posts, /now) gets the same treatment in one
+ * place.
  *
- * Hand-tuned (no @tailwindcss/typography) to keep weight low and styling
- * fully under our control. One source of truth — used by /posts/[slug] and
- * /now. If you change post styling, change it here.
+ * `max-w-none` removes prose's default 65ch line cap — the surrounding
+ * PageMain already constrains the column to max-w-2xl, so an additional
+ * inner cap would just nest two width limits.
  */
 interface Props {
   html: string;
@@ -14,119 +16,4 @@ interface Props {
 const { html } = Astro.props;
 ---
 
-<div class="post-body" set:html={html} />
-
-<style>
-  .post-body {
-    color: var(--color-ink-1);
-    line-height: 1.7;
-  }
-
-  .post-body :global(p),
-  .post-body :global(ul),
-  .post-body :global(ol),
-  .post-body :global(blockquote),
-  .post-body :global(pre),
-  .post-body :global(table) {
-    margin: 0 0 1.25em;
-  }
-
-  .post-body :global(h1),
-  .post-body :global(h2),
-  .post-body :global(h3),
-  .post-body :global(h4) {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    color: var(--color-ink-1);
-    letter-spacing: -0.01em;
-    line-height: 1.25;
-    margin: 2em 0 0.6em;
-  }
-  .post-body :global(h1) {
-    font-size: 1.75rem;
-  }
-  .post-body :global(h2) {
-    font-size: 1.4rem;
-  }
-  .post-body :global(h3) {
-    font-size: 1.15rem;
-  }
-  .post-body :global(h4) {
-    font-size: 1rem;
-  }
-
-  .post-body :global(a) {
-    color: var(--color-ink-1);
-    text-decoration: underline;
-    text-decoration-color: var(--color-ink-3);
-    text-underline-offset: 3px;
-  }
-  .post-body :global(a:hover) {
-    text-decoration-color: var(--color-ink-accent);
-    color: var(--color-ink-accent);
-  }
-
-  .post-body :global(strong) {
-    color: var(--color-ink-1);
-    font-weight: 600;
-  }
-
-  .post-body :global(em) {
-    font-style: italic;
-  }
-
-  .post-body :global(ul),
-  .post-body :global(ol) {
-    padding-left: 1.5em;
-  }
-  .post-body :global(li) {
-    margin-bottom: 0.4em;
-  }
-  .post-body :global(li::marker) {
-    color: var(--color-ink-3);
-  }
-
-  .post-body :global(blockquote) {
-    border-left: 2px solid var(--color-ink-rule);
-    padding-left: 1.25em;
-    color: var(--color-ink-2);
-    font-style: italic;
-  }
-
-  .post-body :global(code) {
-    font-family: var(--font-mono);
-    font-size: 0.875em;
-    background: var(--color-ink-rule);
-    padding: 0.15em 0.4em;
-    border-radius: 3px;
-    color: var(--color-ink-1);
-  }
-
-  .post-body :global(pre) {
-    font-family: var(--font-mono);
-    font-size: 0.875em;
-    background: var(--color-ink-rule);
-    padding: 1em 1.25em;
-    border-radius: 4px;
-    overflow-x: auto;
-    line-height: 1.6;
-  }
-  .post-body :global(pre code) {
-    background: none;
-    padding: 0;
-    border-radius: 0;
-  }
-
-  .post-body :global(hr) {
-    border: 0;
-    border-top: 1px solid var(--color-ink-rule);
-    margin: 2.5em 0;
-  }
-
-  .post-body :global(img) {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin: 1.5em 0;
-  }
-</style>
+<div class="prose max-w-none" set:html={html} />

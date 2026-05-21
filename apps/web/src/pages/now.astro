@@ -8,10 +8,10 @@ import MarkdownBody from "../components/MarkdownBody.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageMain from "../components/PageMain.astro";
 import { api } from "../lib/api";
-import { marked } from "marked";
+import { renderMarkdown } from "../lib/markdown";
 
 const now = await api.now();
-const bodyHtml = now ? await marked.parse(now.body) : null;
+const bodyHtml = now ? await renderMarkdown(now.body) : null;
 ---
 
 <Layout title="Now — Burak Sümer" description="What I'm currently focused on.">

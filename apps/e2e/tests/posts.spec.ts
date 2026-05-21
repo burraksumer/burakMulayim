@@ -31,3 +31,16 @@ test("post detail page renders substantive body content", async ({ page }) => {
   const bodyText = await page.locator("main").innerText();
   expect(bodyText.length).toBeGreaterThan(200);
 });
+
+test("external links in post markdown open in a new tab with safe rel", async ({ page }) => {
+  // switch-to-astro.md links to https://github.com/burraksumer/burakMulayim
+  // in its body. The markdown renderer must rewrite that to target=_blank +
+  // rel=noopener noreferrer; without it, clicking a reference link kicks the
+  // reader off the page they were reading.
+  await page.goto("/posts/switch-to-astro");
+  const externalLink = page.locator('article a[href^="https://"]').first();
+  await expect(externalLink).toBeVisible();
+  await expect(externalLink).toHaveAttribute("target", "_blank");
+  await expect(externalLink).toHaveAttribute("rel", /noopener/);
+  await expect(externalLink).toHaveAttribute("rel", /noreferrer/);
+});
