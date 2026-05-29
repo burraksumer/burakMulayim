@@ -1,5 +1,5 @@
 ---
-import ExternalLink from "./ExternalLink.astro";
+import Link from "./Link.astro";
 import { api } from "../lib/api";
 
 // Site-level footer: carbon stat + 512kb.club marker.
@@ -28,8 +28,8 @@ const KB_CLUB_TIER: "green" | "orange" | "blue" = "green";
       )
     }
     <span class="text-ink-rule mx-2">·</span>
-    <ExternalLink href="https://512kb.club/" class="hover:text-ink-1">
+    <Link href="https://512kb.club/" class="hover:text-ink-1">
       512kb.club {KB_CLUB_TIER}
-    </ExternalLink>
+    </Link>
   </p>
 </footer>

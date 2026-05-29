@@ -91,16 +91,19 @@ a * {
   letter-spacing: -0.01em;
 }
 
-/* Links: quiet underline by default, warm accent on hover (matches the
-   prose-link style used on /about). */
+/* Links: no underline — the markdown renderer (see lib/markdown.ts) appends
+   a `→` or `↗` arrow span to every link, mirroring the Link component
+   elsewhere on the site. Arrow is the link signal; underline would be a
+   redundant second one. Link text starts at ink-2 (one step dimmer than
+   the prose body's ink-1) so the reader sees it as a link, then brightens
+   back to ink-1 on hover — same chrome convention used everywhere. */
 .prose :where(a):not(:where([class~="not-prose"] *)) {
+  color: var(--color-ink-2);
   font-weight: inherit;
-  text-decoration-color: var(--color-ink-3);
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 .prose :where(a):not(:where([class~="not-prose"] *)):hover {
-  color: var(--color-ink-accent);
-  text-decoration-color: var(--color-ink-accent);
+  color: var(--color-ink-1);
 }
 
 /* Prose wraps inline <code> in backtick characters via ::before/::after.

@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
+import Link from "../components/Link.astro";
 import PageHeader from "../components/PageHeader.astro";
 import PageMain from "../components/PageMain.astro";
 ---
@@ -31,11 +32,8 @@ import PageMain from "../components/PageMain.astro";
         English for a few years before engineering. Some of what I write ends up here.
       </p>
       <p class="text-ink-2">
-        Email is the best way to reach me: <a
-          href="mailto:burak@mulayim.app"
-          class="text-ink-1 decoration-ink-3 hover:decoration-ink-accent underline underline-offset-[3px]"
-          >burak[at]mulayim.app</a
-        >.
+        Email is the best way to reach me:
+        <Link href="mailto:burak@mulayim.app" class="hover:text-ink-1"> burak[at]mulayim.app </Link>
       </p>
     </div>
   </PageMain>

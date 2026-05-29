@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
 import DateTime from "../components/DateTime.astro";
-import ExternalLink from "../components/ExternalLink.astro";
+import Link from "../components/Link.astro";
 import HeaderMeta from "../components/HeaderMeta.astro";
 import MarkdownBody from "../components/MarkdownBody.astro";
 import PageHeader from "../components/PageHeader.astro";
@@ -25,9 +25,9 @@ const bodyHtml = now ? await renderMarkdown(now.body) : null;
               Updated <DateTime date={now.last_modified} format="long" />
             </span>
             <span aria-hidden="true">·</span>
-            <ExternalLink href="https://nownownow.com/about" class="hover:text-ink-1">
+            <Link href="https://nownownow.com/about" class="hover:text-ink-1">
               nownownow.com
-            </ExternalLink>
+            </Link>
           </HeaderMeta>
         )
       }

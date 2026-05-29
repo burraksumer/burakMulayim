@@ -14,12 +14,26 @@ import { marked } from "marked";
 // `marked.use` mutates the global marked singleton. We run it once at module
 // load; subsequent imports see the same configured instance.
 
-function isExternal(href: string): boolean {
-  // http(s) URLs are external. mailto:/tel:/etc. open an OS handler — not a
-  // page swap — so the same-tab vs new-tab choice doesn't apply there.
-  // Fragment/relative/absolute-path URLs are all internal navigation.
+// Two separate concerns: which arrow to draw, and whether to add
+// target="_blank" + rel="noopener noreferrer". They mostly overlap but
+// mailto:/tel:/sms: split them — they're "external" semantically (the
+// arrow says so) but they open an OS handler, not another tab, so
+// target=_blank is wrong / no-op there.
+function isExternalArrow(href: string): boolean {
+  return /^(https?:\/\/|mailto:|tel:|sms:)/i.test(href);
+}
+function isNewTabExternal(href: string): boolean {
   return /^https?:\/\//i.test(href);
 }
+
+// Arrow markup mirrors the Link.astro component so links in markdown
+// bodies (post content, /now content) match the chrome links elsewhere on
+// the site. The `group/link` class on the anchor pairs with
+// `group-hover/link:` on the arrow span — hovering the link flips the
+// arrow to the warm accent. If Link.astro's arrow markup changes, change
+// it here too.
+const INTERNAL_ARROW = `<span class="text-ink-3 group-hover/link:text-ink-accent ml-1 font-mono text-xs" aria-hidden="true">→</span>`;
+const EXTERNAL_ARROW = `<span class="text-ink-3 group-hover/link:text-ink-accent ml-0.5 align-super font-mono text-[10px]" aria-hidden="true">↗</span>`;
 
 marked.use({
   gfm: true,
@@ -31,8 +45,11 @@ marked.use({
       // renders correctly.
       const text = this.parser.parseInline(tokens);
       const titleAttr = title ? ` title="${title}"` : "";
-      const externalAttrs = isExternal(href) ? ` target="_blank" rel="noopener noreferrer"` : "";
-      return `<a href="${href}"${titleAttr}${externalAttrs}>${text}</a>`;
+      const newTabAttrs = isNewTabExternal(href)
+        ? ` target="_blank" rel="noopener noreferrer"`
+        : "";
+      const arrow = isExternalArrow(href) ? EXTERNAL_ARROW : INTERNAL_ARROW;
+      return `<a href="${href}"${titleAttr}${newTabAttrs} class="group/link">${text}${arrow}</a>`;
     },
   },
 });

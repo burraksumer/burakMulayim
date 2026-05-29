@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ExternalLink from "../components/ExternalLink.astro";
-import InternalLink from "../components/InternalLink.astro";
+import Link from "../components/Link.astro";
 import PageMain from "../components/PageMain.astro";
 import PostList from "../components/PostList.astro";
 import SectionLabel from "../components/SectionLabel.astro";
@@ -25,12 +24,7 @@ const social: { href: string; label: string }[] = [
       <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Burak Sümer</h1>
       <p class="text-ink-2 mt-3 max-w-prose text-[15px] leading-relaxed">
         Software engineer, currently based in Germany. I write about software, the web, and
-        literature —
-        <a
-          href="/about"
-          class="text-ink-1 decoration-ink-3 hover:decoration-ink-accent underline underline-offset-[3px]"
-          >more about me</a
-        >.
+        literature. <Link href="/about" class="hover:text-ink-1">more about me</Link>
       </p>
     </section>
 
@@ -44,12 +38,9 @@ const social: { href: string; label: string }[] = [
           <PostList posts={recentPosts} />
         )
       }
-      <InternalLink
-        href="/posts"
-        class="text-ink-3 hover:text-ink-1 mt-6 inline-block font-mono text-xs"
-      >
+      <Link href="/posts" class="text-ink-3 hover:text-ink-1 mt-6 inline-block font-mono text-xs">
         all posts
-      </InternalLink>
+      </Link>
     </section>
 
     <!-- Currently -->
@@ -73,13 +64,13 @@ const social: { href: string; label: string }[] = [
                     <span class="text-ink-3">{relativeTime(nowTrack.played_at)}</span>
                   )}
                 </span>
-                <ExternalLink
+                <Link
                   href={nowTrack.url}
                   class="text-ink-2 hover:text-ink-1 row-start-1 text-[15px]"
                 >
                   <span class="font-serif italic">{nowTrack.name}</span>
                   <span> — {nowTrack.artist}</span>
-                </ExternalLink>
+                </Link>
               </>
             )}
             {now?.headline && (
@@ -87,12 +78,9 @@ const social: { href: string; label: string }[] = [
                 <span class="text-ink-3 row-start-2 pt-0.75 font-mono text-xs whitespace-nowrap tabular-nums">
                   {relativeTime(now.last_modified)}
                 </span>
-                <InternalLink
-                  href="/now"
-                  class="text-ink-2 hover:text-ink-1 row-start-2 text-[15px]"
-                >
+                <Link href="/now" class="text-ink-2 hover:text-ink-1 row-start-2 text-[15px]">
                   <span class="font-serif italic">{now.headline}</span>
-                </InternalLink>
+                </Link>
               </>
             )}
           </div>
@@ -107,9 +95,9 @@ const social: { href: string; label: string }[] = [
         {
           social.map((s) => (
             <li>
-              <ExternalLink href={s.href} class="text-ink-2 hover:text-ink-1">
+              <Link href={s.href} class="text-ink-2 hover:text-ink-1">
                 {s.label}
-              </ExternalLink>
+              </Link>
             </li>
           ))
         }
