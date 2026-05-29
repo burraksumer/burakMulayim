@@ -5,30 +5,37 @@ import PageHeader from "../components/PageHeader.astro";
 import PageMain from "../components/PageMain.astro";
 ---
 
-<Layout title="About — Burak Sümer" description="About Burak.">
+<Layout
+  title="About — Burak Sümer"
+  description="About Burak Sümer — software engineer (SDET) based in Germany."
+>
   <PageMain>
     <Breadcrumb trail={[{ href: "/", label: "home" }, { label: "about" }]} />
     <PageHeader title="About" />
 
     <div class="text-ink-1 space-y-5 text-[15px] leading-relaxed">
       <p>
-        Hi, I'm Burak. I'm a software engineer based in Istanbul. I work on web infrastructure, lean
-        software, and the small in-between things that make tools feel good to use.
+        Software engineer (SDET) based in Germany. I design and automate end-to-end testing for web
+        products with tools like Cypress and Playwright. A growing part of my work is building
+        agentic, LLM-driven testing workflows that surface bugs and validate releases. I like
+        systems that stay useful as products grow.
       </p>
       <p>
-        This site is intentionally minimal — under 100 KB per page, self-hosted, no analytics, no
-        cookies. Source is on
-        <a
-          href="https://github.com/burraksumer/burakMulayim"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-ink-1 decoration-ink-3 hover:decoration-ink-accent underline underline-offset-[3px]"
-        >
-          GitHub</a
-        >.
+        Outside work I run a homelab and use GNU/Linux daily, and I've been dabbling with web
+        development for a long time. My taste runs toward brutalist architecture, Bauhaus, and
+        Dieter Rams. Things that feel finished. That sensibility carries over into how I approach
+        engineering.
+      </p>
+      <p>
+        I studied English Literature, co-authored a poetry book called <em>Rhymery</em>, and taught
+        English for a few years before engineering. Some of what I write ends up here.
       </p>
       <p class="text-ink-2">
-        Best way to reach me is email or twitter, both linked from the homepage.
+        Email is the best way to reach me: <a
+          href="mailto:burak@mulayim.app"
+          class="text-ink-1 decoration-ink-3 hover:decoration-ink-accent underline underline-offset-[3px]"
+          >burak[at]mulayim.app</a
+        >.
       </p>
     </div>
   </PageMain>
