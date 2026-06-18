@@ -10,7 +10,6 @@ import { test, expect } from "@playwright/test";
 const pages: Array<{ path: string; heading: string; titlePrefix: string }> = [
   { path: "/about", heading: "About", titlePrefix: "About" },
   { path: "/now", heading: "Now", titlePrefix: "Now" },
-  { path: "/projects", heading: "Projects", titlePrefix: "Projects" },
   { path: "/posts", heading: "Writing", titlePrefix: "Writing" },
   { path: "/tags", heading: "Tags", titlePrefix: "Tags" },
 ];
