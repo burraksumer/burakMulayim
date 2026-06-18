@@ -15,7 +15,7 @@ const description = tags.length
 <Layout title="Tags — Burak Sümer" description="All tags.">
   <PageMain>
     <Breadcrumb trail={[{ href: "/", label: "home" }, { label: "tags" }]} />
-    <PageHeader title="Tags" description={description} class="mb-16" />
+    <PageHeader title="Tags" description={description} />
 
     {
       tags.length === 0 ? (
@@ -26,7 +26,7 @@ const description = tags.length
             <li>
               <a
                 href={`/tags/${t.slug}`}
-                class="group grid grid-cols-[2.5rem_1fr] items-baseline gap-x-5"
+                class="group grid grid-cols-[3rem_1fr] items-baseline gap-x-5"
               >
                 <span class="text-ink-3 font-mono text-xs tabular-nums">
                   {String(t.count).padStart(2, "0")}
