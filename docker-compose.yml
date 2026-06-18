@@ -1,10 +1,11 @@
-# Coolify reads this file as a "Docker Compose" application.
+# Dokploy reads this file as a "Docker Compose" application.
 # Both services share an automatic Docker network; `web` reaches `server`
 # by service name (http://server:3000) without going through the public proxy.
 #
-# Coolify-specific labels map services to public domains. The label syntax
-# below works with Coolify v4's built-in proxy. Adjust if your Coolify uses
-# a different proxy backend.
+# Public domains are configured in the Dokploy UI, which injects the Traefik
+# labels and attaches each service to the external `dokploy-network` at deploy
+# time (while keeping it on the default network for internal service-to-service
+# traffic). No proxy labels are needed in this file.
 
 services:
   server:
@@ -32,10 +33,7 @@ services:
       retries: 3
       start_period: 30s # grace window during startup
       start_interval: 1s # poll every 1s during the grace window
-    labels:
-      - coolify.managed=true
-      - coolify.proxy.host=api.mulayim.app
-      - coolify.proxy.port=3000
+    # Public domain: api.mulayim.app → port 3000 (configured in the Dokploy UI).
 
   web:
     build:
@@ -64,13 +62,11 @@ services:
       retries: 3
       start_period: 30s # grace window during startup
       start_interval: 1s # poll every 1s during the grace window
-    labels:
-      - coolify.managed=true
-      - coolify.proxy.host=burak.mulayim.app
-      - coolify.proxy.port=4321
+    # Public domain: burak.mulayim.app → port 4321 (configured in the Dokploy UI).
 
-  # E2E test runner — opt-in via `--profile test`. Coolify ignores profiled
-  # services, so production deploys are untouched. Lives on the same Docker
+  # E2E test runner — opt-in via `--profile test`. Dokploy ignores profiled
+  # services (it never activates the profile), so production deploys are
+  # untouched. Lives on the same Docker
   # network as web/server, so it reaches them by service name (no host port
   # mapping or CORS overrides needed).
   e2e:

@@ -14,7 +14,7 @@ I designed it to be interchangeable. Backend might change or get a sibling to co
 
 ## Tech (today)
 
-Bun, Elysia, Astro, Tailwind, SQLite + Drizzle, Satori + resvg, Playwright for e2e. Self-hosted on a single VPS via Coolify.
+Bun, Elysia, Astro, Tailwind, SQLite + Drizzle, Satori + resvg, Playwright for e2e. Self-hosted on a single VPS via Dokploy.
 
 ## Run
 
