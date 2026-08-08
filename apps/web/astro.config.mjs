@@ -10,6 +10,11 @@ export default defineConfig({
   site: "https://burak.mulayim.app",
   output: "server",
   adapter: node({ mode: "standalone" }),
+  // Nothing here touches `Astro.session`, and the node adapter would otherwise
+  // wire up filesystem-backed session storage on every build. Opting out keeps
+  // the session runtime out of the SSR bundle. Flip to `true` if a route ever
+  // needs `Astro.session` — it is `undefined` while this is off.
+  session: false,
   env: {
     schema: {
       PUBLIC_SERVER_URL: envField.string({
