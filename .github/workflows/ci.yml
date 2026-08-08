@@ -8,6 +8,10 @@ name: CI
 # others. The duplication between jobs is the point — every layer stays visible
 # and editable in place.
 
+# Dependabot PRs are deliberately not built: they run with a separate secret
+# store, so LASTFM_API_KEY resolves empty and the e2e job cannot pass. Each job
+# carries the actor guard rather than filtering here, because `on:` cannot
+# express it.
 on:
   pull_request:
   push:
@@ -32,6 +36,7 @@ env:
 jobs:
   lint:
     name: Lint & format
+    if: github.actor != 'dependabot[bot]'
     # Pinned rather than ubuntu-latest so a runner image rollout can't change
     # results underneath us.
     runs-on: ubuntu-24.04
@@ -60,6 +65,7 @@ jobs:
 
   types:
     name: Type check
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -87,6 +93,7 @@ jobs:
 
   unit:
     name: Unit tests
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -115,6 +122,7 @@ jobs:
 
   build:
     name: Build
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -141,6 +149,7 @@ jobs:
 
   e2e:
     name: E2E (containerized)
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
