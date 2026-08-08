@@ -74,6 +74,12 @@ services:
     build:
       context: .
       dockerfile: apps/e2e/Dockerfile
+    # Chromium shares memory across its processes via POSIX shared memory, and
+    # Docker's default 64MB /dev/shm is not enough for it. Playwright documents
+    # --ipc=host as the fix; without it the browser intermittently dies at
+    # launch with SIGSEGV, which shows up as an unrelated-looking test failure.
+    # If it ever recurs, `shm_size: 1gb` is the other lever.
+    ipc: host
     volumes:
       # Capture the HTML report and per-test artifacts on the host so they
       # survive `--rm` and can be opened with `bunx playwright show-report`.
