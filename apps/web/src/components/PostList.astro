@@ -1,0 +1,21 @@
+---
+import type { PostMeta } from "@burakmulayim/shared";
+import PostListItem from "./PostListItem.astro";
+
+interface Props {
+  posts: PostMeta[];
+  class?: string;
+}
+
+const { posts, class: className }: Props = Astro.props;
+---
+
+<ul class:list={["space-y-6", className]}>
+  {
+    posts.map((p) => (
+      <li>
+        <PostListItem post={p} />
+      </li>
+    ))
+  }
+</ul>

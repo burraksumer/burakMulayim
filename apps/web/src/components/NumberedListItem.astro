@@ -1,0 +1,18 @@
+---
+interface Props {
+  number: string;
+  href: string;
+  class?: string;
+}
+
+const { number, href, class: className }: Props = Astro.props;
+---
+
+<li class="contents">
+  <span class="text-ink-3 font-mono text-xs tabular-nums" aria-hidden="true">
+    {number}
+  </span>
+  <a href={href} class:list={["text-ink-1 hover:text-ink-accent font-serif text-lg", className]}>
+    <slot />
+  </a>
+</li>

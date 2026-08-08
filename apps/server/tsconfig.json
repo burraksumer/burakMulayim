@@ -1,0 +1,12 @@
+{
+  "extends": "@burakmulayim/config/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "jsx": "react-jsx"
+  },
+  "include": ["src", "test"]
+}

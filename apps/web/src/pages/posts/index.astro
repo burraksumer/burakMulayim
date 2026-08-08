@@ -1,0 +1,44 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import PageMain from "../../components/PageMain.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PostList from "../../components/PostList.astro";
+import SectionLabel from "../../components/SectionLabel.astro";
+import { api, type PostMeta } from "../../lib/api";
+
+const posts = (await api.posts()) ?? [];
+
+// Group posts by year, descending. Posts are already date-desc sorted by the API.
+const byYear = new Map<string, PostMeta[]>();
+for (const p of posts) {
+  const year = p.date.slice(0, 4);
+  if (!byYear.has(year)) byYear.set(year, []);
+  byYear.get(year)!.push(p);
+}
+const years = Array.from(byYear.keys());
+
+const description = posts.length
+  ? `${posts.length} ${posts.length === 1 ? "post" : "posts"}, oldest 2022. Long reads, short letters, technical notes.`
+  : undefined;
+---
+
+<Layout title="Writing — Burak Sümer" description="All posts.">
+  <PageMain>
+    <Breadcrumb trail={[{ href: "/", label: "home" }, { label: "writing" }]} />
+    <PageHeader title="Writing" description={description} />
+
+    {
+      posts.length === 0 ? (
+        <p class="text-ink-3">Posts unavailable.</p>
+      ) : (
+        years.map((year) => (
+          <section class="mb-12">
+            <SectionLabel class="mb-6">{year}</SectionLabel>
+            <PostList posts={byYear.get(year)!} />
+          </section>
+        ))
+      )
+    }
+  </PageMain>
+</Layout>

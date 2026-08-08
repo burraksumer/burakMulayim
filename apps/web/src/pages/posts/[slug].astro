@@ -1,0 +1,66 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import DateTime from "../../components/DateTime.astro";
+import HeaderMeta from "../../components/HeaderMeta.astro";
+import MarkdownBody from "../../components/MarkdownBody.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PageMain from "../../components/PageMain.astro";
+import TagList from "../../components/TagList.astro";
+import { api } from "../../lib/api";
+import { renderMarkdown } from "../../lib/markdown";
+import { buildArticleJsonLd } from "../../lib/post-jsonld";
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect("/posts");
+
+const post = await api.post(slug);
+if (!post) {
+  return Astro.rewrite("/404");
+}
+
+const bodyHtml = await renderMarkdown(post.body);
+
+// Structured data for search engines. Emits a BlogPosting JSON-LD block;
+// drives rich SERP results (date stamp, byline, thumbnail) on Google + Bing.
+const jsonld = buildArticleJsonLd(post, {
+  siteUrl: Astro.site!.href,
+  authorName: "Burak Sümer",
+  authorUrl: Astro.site!.href,
+});
+---
+
+<Layout
+  title={`${post.title} — Burak Sümer`}
+  description={post.description ?? post.excerpt}
+  ogImage={`/og/${post.slug}.png`}
+  article={{
+    publishedTime: post.date,
+    author: "Burak Sümer",
+    tags: post.tags,
+  }}
+>
+  <PageMain>
+    <Breadcrumb
+      trail={[
+        { href: "/", label: "home" },
+        { href: "/posts", label: "writing" },
+        { label: post.title },
+      ]}
+    />
+
+    <article>
+      <PageHeader title={post.title} size="large">
+        <HeaderMeta class="text-sm">
+          <DateTime date={post.date} format="long" />
+          <span class="text-ink-3 font-mono text-xs tabular-nums">{post.reading_time} min</span>
+          <TagList tags={post.tags} />
+        </HeaderMeta>
+      </PageHeader>
+
+      <MarkdownBody html={bodyHtml} />
+    </article>
+  </PageMain>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
+</Layout>

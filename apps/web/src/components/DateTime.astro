@@ -1,0 +1,16 @@
+---
+import { fmtDate, fmtLongDate } from "@burakmulayim/shared";
+
+interface Props {
+  date: string;
+  format?: "short" | "long";
+  class?: string;
+}
+
+const { date, format = "short", class: className }: Props = Astro.props;
+const text = format === "long" ? fmtLongDate(date) : fmtDate(date);
+---
+
+<time class:list={["text-ink-3 font-mono text-xs tabular-nums", className]} datetime={date}>
+  {text}
+</time>

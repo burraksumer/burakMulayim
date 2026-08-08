@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import DateTime from "../components/DateTime.astro";
+import Link from "../components/Link.astro";
+import HeaderMeta from "../components/HeaderMeta.astro";
+import MarkdownBody from "../components/MarkdownBody.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageMain from "../components/PageMain.astro";
+import { api } from "../lib/api";
+import { renderMarkdown } from "../lib/markdown";
+
+const now = await api.now();
+const bodyHtml = now ? await renderMarkdown(now.body) : null;
+---
+
+<Layout title="Now — Burak Sümer" description="What I'm currently focused on.">
+  <PageMain>
+    <Breadcrumb trail={[{ href: "/", label: "home" }, { label: "now" }]} />
+    <PageHeader title="Now">
+      {
+        now && (
+          <HeaderMeta class="text-ink-3 font-mono text-xs">
+            <span>
+              Updated <DateTime date={now.last_modified} format="long" />
+            </span>
+            <span aria-hidden="true">·</span>
+            <Link href="https://nownownow.com/about" class="hover:text-ink-1">
+              nownownow.com
+            </Link>
+          </HeaderMeta>
+        )
+      }
+    </PageHeader>
+
+    {now ? <MarkdownBody html={bodyHtml ?? ""} /> : <p class="text-ink-3">Now page unavailable.</p>}
+  </PageMain>
+</Layout>

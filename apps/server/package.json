@@ -1,0 +1,35 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsdown",
+    "check-types": "tsc --noEmit -p .",
+    "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
+    "dev": "bun run --hot src/index.ts",
+    "start": "bun run dist/index.mjs",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@burakmulayim/db": "workspace:*",
+    "@burakmulayim/env": "workspace:*",
+    "@burakmulayim/shared": "workspace:*",
+    "@elysiajs/cors": "^1.4.1",
+    "@fontsource/ibm-plex-serif": "^5.2.7",
+    "@resvg/resvg-js": "^2.6.2",
+    "@sinclair/typebox": "^0.34.49",
+    "dotenv": "catalog:",
+    "elysia": "^1.4.28",
+    "gray-matter": "^4.0.3",
+    "satori": "^0.26.0",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@burakmulayim/config": "workspace:*",
+    "@types/bun": "catalog:",
+    "tsdown": "^0.21.9",
+    "typescript7": "catalog:"
+  }
+}

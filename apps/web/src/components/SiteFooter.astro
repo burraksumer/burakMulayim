@@ -1,0 +1,35 @@
+---
+import Link from "./Link.astro";
+import { api } from "../lib/api";
+
+// Site-level footer: carbon stat + 512kb.club marker.
+// Rendered on every page via Layout. Failures degrade silently — if /carbon
+// is unreachable, we fall back to the static "built lean" line.
+const carbon = await api.carbon();
+
+// 512kb.club tier: "green" (<100KB), "orange" (100-250KB), "blue" (250-512KB).
+// Flip if a deployed page stops qualifying.
+const KB_CLUB_TIER: "green" | "orange" | "blue" = "green";
+---
+
+<footer
+  class="border-ink-rule text-ink-3 mx-auto w-full max-w-2xl border-t px-6 py-8 font-mono text-xs"
+>
+  <p>
+    {
+      carbon ? (
+        <>
+          this page emits ≈ {carbon.gco2e.toFixed(4)}g CO₂ — cleaner than{" "}
+          {Math.round(carbon.cleanerThan * 100)}%
+          <span class="text-ink-2 ml-1">({carbon.rating})</span>
+        </>
+      ) : (
+        <>built lean</>
+      )
+    }
+    <span class="text-ink-rule mx-2">·</span>
+    <Link href="https://512kb.club/" class="hover:text-ink-1">
+      512kb.club {KB_CLUB_TIER}
+    </Link>
+  </p>
+</footer>

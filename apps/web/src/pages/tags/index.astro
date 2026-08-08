@@ -1,0 +1,44 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PageMain from "../../components/PageMain.astro";
+import { api } from "../../lib/api";
+
+const tags = (await api.tags()) ?? [];
+
+const description = tags.length
+  ? `${tags.length} ${tags.length === 1 ? "tag" : "tags"} across the writing.`
+  : undefined;
+---
+
+<Layout title="Tags — Burak Sümer" description="All tags.">
+  <PageMain>
+    <Breadcrumb trail={[{ href: "/", label: "home" }, { label: "tags" }]} />
+    <PageHeader title="Tags" description={description} />
+
+    {
+      tags.length === 0 ? (
+        <p class="text-ink-3">Tags unavailable.</p>
+      ) : (
+        <ul class="space-y-4">
+          {tags.map((t) => (
+            <li>
+              <a
+                href={`/tags/${t.slug}`}
+                class="group grid grid-cols-[3rem_1fr] items-baseline gap-x-5"
+              >
+                <span class="text-ink-3 font-mono text-xs tabular-nums">
+                  {String(t.count).padStart(2, "0")}
+                </span>
+                <span class="text-ink-1 group-hover:text-ink-accent font-serif text-lg">
+                  {t.tag}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </PageMain>
+</Layout>

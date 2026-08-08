@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PageMain from "../../components/PageMain.astro";
+import PostList from "../../components/PostList.astro";
+import SectionLabel from "../../components/SectionLabel.astro";
+import { api } from "../../lib/api";
+import { canonicalTagPath } from "@burakmulayim/shared";
+
+const { tag } = Astro.params;
+if (!tag) return Astro.redirect("/tags");
+
+const result = await api.tag(tag);
+if (!result) return Astro.rewrite("/404");
+
+// Canonical-URL redirect: if the URL slug isn't the canonical form,
+// 301 to the lowercase slug. SEO + clean shareable URLs.
+const redirectPath = canonicalTagPath(decodeURIComponent(tag), result.slug);
+if (redirectPath) return Astro.redirect(redirectPath, 301);
+
+const description = `${result.posts.length} ${result.posts.length === 1 ? "post" : "posts"}.`;
+---
+
+<Layout title={`#${result.tag} — Burak Sümer`} description={`Posts tagged ${result.tag}.`}>
+  <PageMain>
+    <Breadcrumb
+      trail={[
+        { href: "/", label: "home" },
+        { href: "/tags", label: "tags" },
+        { label: result.tag },
+      ]}
+    />
+    <PageHeader title={result.tag} description={description}>
+      <SectionLabel as="p" slot="eyebrow" class="mb-2">Tag</SectionLabel>
+    </PageHeader>
+
+    <PostList posts={result.posts} />
+  </PageMain>
+</Layout>

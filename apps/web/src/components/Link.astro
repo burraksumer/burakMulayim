@@ -1,0 +1,59 @@
+---
+/**
+ * The site's only link component. Replaces what used to be separate
+ * InternalLink and ExternalLink components — they shared 80% of their
+ * markup and the duplication was paying for nothing.
+ *
+ * Detects external vs internal from the `href` automatically:
+ *   - external: http(s)://, mailto:, tel:, sms: — gets the "↗" arrow
+ *   - internal: relative paths, fragment anchors — gets the "→" arrow
+ *
+ * `target="_blank"` + `rel="noopener noreferrer"` are added only for
+ * http(s) URLs. mailto:/tel:/sms: open OS handlers, so target=_blank there
+ * is either a no-op or actively wrong depending on browser.
+ *
+ * Caller controls text color/size/font/weight via the `class` prop.
+ * Component only owns: target/rel, arrow shape, hover-behavior on the
+ * arrow (via the `group/link` pair).
+ *
+ * Note: lib/markdown.ts mirrors this component's HTML output as a string
+ * because Astro components can't be invoked from within marked's renderer.
+ * If you change the arrow markup here, change it there too.
+ */
+
+interface Props {
+  href: string;
+  class?: string;
+}
+
+const { href, class: className } = Astro.props;
+
+const isExternal = /^(https?:\/\/|mailto:|tel:|sms:)/i.test(href);
+const isHttp = /^https?:\/\//i.test(href);
+---
+
+<a
+  href={href}
+  class:list={["group/link", className]}
+  target={isHttp ? "_blank" : undefined}
+  rel={isHttp ? "noopener noreferrer" : undefined}
+>
+  <slot />
+  {
+    isExternal ? (
+      <span
+        class="text-ink-3 group-hover/link:text-ink-accent ml-0.5 align-super font-mono text-[10px]"
+        aria-hidden="true"
+      >
+        ↗
+      </span>
+    ) : (
+      <span
+        class="text-ink-3 group-hover/link:text-ink-accent ml-1 font-mono text-xs"
+        aria-hidden="true"
+      >
+        →
+      </span>
+    )
+  }
+</a>

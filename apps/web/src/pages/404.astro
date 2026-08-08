@@ -1,0 +1,41 @@
+---
+import Layout from "../layouts/Layout.astro";
+import NumberedListItem from "../components/NumberedListItem.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageMain from "../components/PageMain.astro";
+import SectionLabel from "../components/SectionLabel.astro";
+
+interface NavItem {
+  href: string;
+  label: string;
+}
+
+const places: NavItem[] = [
+  { href: "/", label: "home" },
+  { href: "/posts", label: "writing" },
+  { href: "/tags", label: "tags" },
+  { href: "/now", label: "now" },
+  { href: "/about", label: "about" },
+];
+
+const description =
+  "That page either doesn't exist, or moved somewhere else. If you followed a link from outside, sorry — try one of these instead:";
+---
+
+<Layout title="Not found — Burak Sümer" description="That page doesn't exist." robots="noindex">
+  <PageMain>
+    <PageHeader title="Not found" description={description}>
+      <SectionLabel as="p" slot="eyebrow" class="mb-2">404</SectionLabel>
+    </PageHeader>
+
+    <ul class="grid grid-cols-[3rem_1fr] items-baseline gap-x-5 gap-y-4">
+      {
+        places.map((p, i) => (
+          <NumberedListItem number={String(i + 1).padStart(2, "0")} href={p.href}>
+            {p.label}
+          </NumberedListItem>
+        ))
+      }
+    </ul>
+  </PageMain>
+</Layout>

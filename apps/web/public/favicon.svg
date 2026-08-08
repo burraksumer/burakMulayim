@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+    <style>
+        text { fill: #0c0b0a; }
+        @media (prefers-color-scheme: dark) {
+            text { fill: #e8e2d4; }
+        }
+    </style>
+    <!--
+      x=66 (not 64) shifts the glyph ~2px right of geometric center to
+      optically balance the heavier left stem of a serif "B".
+      y=112 places the baseline so the cap fills ~85% of the canvas
+      (font-size 132 × ~0.72 cap-height ratio for the serif chain).
+    -->
+    <text
+        x="66" y="112"
+        text-anchor="middle"
+        font-family="ui-serif, Georgia, 'Iowan Old Style', 'Charter', 'New York', 'Apple Garamond', serif"
+        font-size="132"
+        font-weight="500"
+        letter-spacing="-0.02em"
+    >B</text>
+</svg>

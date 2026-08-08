@@ -1,0 +1,40 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import Link from "../components/Link.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PageMain from "../components/PageMain.astro";
+---
+
+<Layout
+  title="About — Burak Sümer"
+  description="About Burak Sümer — software engineer (SDET) based in Germany."
+>
+  <PageMain>
+    <Breadcrumb trail={[{ href: "/", label: "home" }, { label: "about" }]} />
+    <PageHeader title="About" />
+
+    <div class="text-ink-1 space-y-5 text-[15px] leading-relaxed">
+      <p>
+        Software engineer (SDET) based in Germany. I design and automate end-to-end testing for web
+        products with tools like Cypress and Playwright. A growing part of my work is building
+        agentic, LLM-driven testing workflows that surface bugs and validate releases. I like
+        systems that stay useful as products grow.
+      </p>
+      <p>
+        Outside work I run a homelab and use GNU/Linux daily, and I've been dabbling with web
+        development for a long time. My taste runs toward brutalist architecture, Bauhaus, and
+        Dieter Rams. Things that feel finished. That sensibility carries over into how I approach
+        engineering.
+      </p>
+      <p>
+        I studied English Literature, co-authored a poetry book called <em>Rhymery</em>, and taught
+        English for a few years before engineering. Some of what I write ends up here.
+      </p>
+      <p class="text-ink-2">
+        Email is the best way to reach me:
+        <Link href="mailto:burak@mulayim.app" class="hover:text-ink-1"> burak[at]mulayim.app </Link>
+      </p>
+    </div>
+  </PageMain>
+</Layout>

@@ -1,0 +1,93 @@
+# Dokploy reads this file as a "Docker Compose" application.
+# Both services share an automatic Docker network; `web` reaches `server`
+# by service name (http://server:3000) without going through the public proxy.
+#
+# Public domains are configured in the Dokploy UI, which injects the Traefik
+# labels and attaches each service to the external `dokploy-network` at deploy
+# time (while keeping it on the default network for internal service-to-service
+# traffic). No proxy labels are needed in this file.
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: apps/server/Dockerfile
+    expose:
+      - "3000"
+    volumes:
+      - data:/data
+    environment:
+      DATABASE_URL: /data/local.db
+      POSTS_DIR: /app/apps/server/content/posts
+      CORS_ORIGIN: https://burak.mulayim.app
+      WEBSITECARBON_URL: https://burak.mulayim.app
+      WEBSITECARBON_GREEN: "true"
+      LASTFM_USER: buraksumer13
+      LASTFM_API_KEY: ${LASTFM_API_KEY}
+      NODE_ENV: production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:3000/healthz"]
+      interval: 30s # steady-state cadence after the app is healthy
+      timeout: 3s
+      retries: 3
+      start_period: 30s # grace window during startup
+      start_interval: 1s # poll every 1s during the grace window
+    # Public domain: api.mulayim.app → port 3000 (configured in the Dokploy UI).
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        # Astro inlines PUBLIC_SERVER_URL at build time (see apps/web/astro.config.mjs).
+        # Bake the docker-network URL so SSR fetches in api.ts reach the server
+        # container at runtime; without this, the bundle hard-codes the localhost
+        # fallback and api.* calls inside the web container fail silently.
+        PUBLIC_SERVER_URL: http://server:3000
+    expose:
+      - "4321"
+    environment:
+      PUBLIC_SERVER_URL: http://server:3000
+      NODE_ENV: production
+    depends_on:
+      server:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      # 127.0.0.1 (not localhost) — Alpine resolves AAAA first, but the listener binds IPv4 only.
+      test: ["CMD", "wget", "-q", "-O-", "http://127.0.0.1:4321/healthz"]
+      interval: 30s # steady-state cadence after the app is healthy
+      timeout: 3s
+      retries: 3
+      start_period: 30s # grace window during startup
+      start_interval: 1s # poll every 1s during the grace window
+    # Public domain: burak.mulayim.app → port 4321 (configured in the Dokploy UI).
+
+  # E2E test runner — opt-in via `--profile test`. Dokploy ignores profiled
+  # services (it never activates the profile), so production deploys are
+  # untouched. Lives on the same Docker
+  # network as web/server, so it reaches them by service name (no host port
+  # mapping or CORS overrides needed).
+  e2e:
+    profiles: [test]
+    build:
+      context: .
+      dockerfile: apps/e2e/Dockerfile
+    volumes:
+      # Capture the HTML report and per-test artifacts on the host so they
+      # survive `--rm` and can be opened with `bunx playwright show-report`.
+      - ./apps/e2e/playwright-report:/app/apps/e2e/playwright-report
+      - ./apps/e2e/test-results:/app/apps/e2e/test-results
+    depends_on:
+      web:
+        condition: service_healthy
+      server:
+        condition: service_healthy
+    environment:
+      BASE_URL: http://web:4321
+      API_BASE_URL: http://server:3000
+      CI: "true"
+
+volumes:
+  data:

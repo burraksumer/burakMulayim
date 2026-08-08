@@ -1,0 +1,3 @@
+bun x lint-staged
+bun run check-types
+bun run test

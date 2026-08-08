@@ -1,0 +1,107 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Link from "../components/Link.astro";
+import PageMain from "../components/PageMain.astro";
+import PostList from "../components/PostList.astro";
+import SectionLabel from "../components/SectionLabel.astro";
+import { api, relativeTime } from "../lib/api";
+
+const [posts, lastfm, now] = await Promise.all([api.posts(), api.lastfm(), api.now()]);
+
+const recentPosts = (posts ?? []).slice(0, 2);
+const nowTrack = lastfm?.tracks.find((t) => t.now_playing) ?? lastfm?.tracks[0];
+
+const social: { href: string; label: string }[] = [
+  { href: "https://github.com/burraksumer", label: "github" },
+  { href: "mailto:burak@mulayim.app", label: "email" },
+];
+---
+
+<Layout>
+  <PageMain>
+    <!-- Identity -->
+    <section class="mb-16">
+      <h1 class="text-ink-1 font-serif text-3xl tracking-tight">Burak Sümer</h1>
+      <p class="text-ink-2 mt-3 max-w-prose text-[15px] leading-relaxed">
+        Software engineer, currently based in Germany. I write about software, the web, and
+        literature. <Link href="/about" class="hover:text-ink-1">more about me</Link>
+      </p>
+    </section>
+
+    <!-- Latest writing -->
+    <section class="mb-16">
+      <SectionLabel class="mb-6">Writing</SectionLabel>
+      {
+        recentPosts.length === 0 ? (
+          <p class="text-ink-3 text-sm">No posts loaded.</p>
+        ) : (
+          <PostList posts={recentPosts} />
+        )
+      }
+      <Link href="/posts" class="text-ink-3 hover:text-ink-1 mt-6 inline-block font-mono text-xs">
+        all posts
+      </Link>
+    </section>
+
+    <!-- Currently -->
+    {
+      (nowTrack || now) && (
+        <section class="mb-16">
+          <SectionLabel class="mb-6">Currently</SectionLabel>
+          <div class="grid grid-cols-[5.5rem_1fr] gap-x-5 gap-y-3">
+            {nowTrack && (
+              <>
+                <span class="row-start-1 inline-flex items-center gap-2 pt-0.75 font-mono text-xs whitespace-nowrap tabular-nums">
+                  {nowTrack.now_playing ? (
+                    <>
+                      <span class="relative inline-flex h-1.5 w-1.5">
+                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                        <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                      </span>
+                      <span class="text-ink-1">now</span>
+                    </>
+                  ) : (
+                    <span class="text-ink-3">{relativeTime(nowTrack.played_at)}</span>
+                  )}
+                </span>
+                <Link
+                  href={nowTrack.url}
+                  class="text-ink-2 hover:text-ink-1 row-start-1 text-[15px]"
+                >
+                  <span class="font-serif italic">{nowTrack.name}</span>
+                  <span> — {nowTrack.artist}</span>
+                </Link>
+              </>
+            )}
+            {now?.headline && (
+              <>
+                <span class="text-ink-3 row-start-2 pt-0.75 font-mono text-xs whitespace-nowrap tabular-nums">
+                  {relativeTime(now.last_modified)}
+                </span>
+                <Link href="/now" class="text-ink-2 hover:text-ink-1 row-start-2 text-[15px]">
+                  <span class="font-serif italic">{now.headline}</span>
+                </Link>
+              </>
+            )}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Elsewhere -->
+    <section class="mb-16">
+      <SectionLabel class="mb-6">Elsewhere</SectionLabel>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        {
+          social.map((s) => (
+            <li>
+              <Link href={s.href} class="text-ink-2 hover:text-ink-1">
+                {s.label}
+              </Link>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </PageMain>
+</Layout>

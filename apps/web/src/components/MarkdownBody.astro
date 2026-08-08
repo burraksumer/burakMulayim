@@ -1,0 +1,19 @@
+---
+/**
+ * Renders pre-parsed markdown HTML inside Tailwind's typography ("prose")
+ * styles. Palette + typography overrides live in global.css so every
+ * markdown-rendering surface (posts, /now) gets the same treatment in one
+ * place.
+ *
+ * `max-w-none` removes prose's default 65ch line cap — the surrounding
+ * PageMain already constrains the column to max-w-2xl, so an additional
+ * inner cap would just nest two width limits.
+ */
+interface Props {
+  html: string;
+}
+
+const { html } = Astro.props;
+---
+
+<div class="prose max-w-none" set:html={html} />

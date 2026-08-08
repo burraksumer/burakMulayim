@@ -1,0 +1,32 @@
+{
+  "name": "web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bunx --bun astro dev",
+    "build": "bunx --bun astro build",
+    "preview": "bunx --bun astro preview",
+    "astro": "bunx --bun astro",
+    "check-types": "bunx --bun astro check",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@astrojs/node": "^11.1.0",
+    "@burakmulayim/env": "workspace:*",
+    "@burakmulayim/shared": "workspace:*",
+    "astro": "^7.2.0",
+    "dotenv": "catalog:",
+    "marked": "^18.0.3",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@burakmulayim/config": "workspace:*",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/bun": "catalog:",
+    "tailwindcss": "^4.3.3",
+    "typescript": "catalog:"
+  }
+}
