@@ -11,7 +11,7 @@
       "zod": "^4.1.13",
       "typescript": "^6",
       "@types/bun": "^1.3.4",
-      "@typescript/native-preview": "7.0.0-dev.20260506.1"
+      "typescript7": "npm:typescript@^7.0.2"
     }
   },
   "type": "module",

@@ -6,7 +6,7 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsdown",
-    "check-types": "tsgo --noEmit -p .",
+    "check-types": "tsc --noEmit -p .",
     "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
     "dev": "bun run --hot src/index.ts",
     "start": "bun run dist/index.mjs",
@@ -29,8 +29,7 @@
   "devDependencies": {
     "@burakmulayim/config": "workspace:*",
     "@types/bun": "catalog:",
-    "@typescript/native-preview": "catalog:",
     "tsdown": "^0.21.9",
-    "typescript": "catalog:"
+    "typescript7": "catalog:"
   }
 }
