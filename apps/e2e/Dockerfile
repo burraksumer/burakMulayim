@@ -9,7 +9,12 @@ FROM mcr.microsoft.com/playwright:v1.59.1-jammy
 
 # Install bun so installs honor the workspace lockfile (bun.lock at the root).
 # Symlinked into /usr/local/bin so CMD/RUN find it without a custom PATH.
-RUN curl -fsSL https://bun.sh/install | bash \
+# The Playwright image does not ship unzip, and bun's install script needs it
+# to unpack the release archive — without it the install fails outright.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends unzip \
+  && rm -rf /var/lib/apt/lists/* \
+  && curl -fsSL https://bun.sh/install | bash \
   && ln -s /root/.bun/bin/bun /usr/local/bin/bun \
   && ln -s /root/.bun/bin/bunx /usr/local/bin/bunx
 
