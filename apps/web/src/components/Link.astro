@@ -14,11 +14,12 @@
  *
  * Caller controls text color/size/font/weight via the `class` prop.
  * Component only owns: target/rel, arrow shape, hover-behavior on the
- * arrow (via the `group/link` pair).
+ * arrow (via the `group/link` pair), and Umami click tracking.
  *
  * Note: lib/markdown.ts mirrors this component's HTML output as a string
  * because Astro components can't be invoked from within marked's renderer.
- * If you change the arrow markup here, change it there too.
+ * If you change the arrow markup or the tracking attributes here, change
+ * them there too.
  */
 
 interface Props {
@@ -32,11 +33,19 @@ const isExternal = /^(https?:\/\/|mailto:|tel:|sms:)/i.test(href);
 const isHttp = /^https?:\/\//i.test(href);
 ---
 
+{
+  /* Umami click tracking, external links only. Internal navigation already
+     shows up as a pageview, so tracking it here would double-count and add
+     attribute bytes to every link on the page for nothing. Astro drops
+     attributes whose value is undefined, so internal links stay untouched. */
+}
 <a
   href={href}
   class:list={["group/link", className]}
   target={isHttp ? "_blank" : undefined}
   rel={isHttp ? "noopener noreferrer" : undefined}
+  data-umami-event={isExternal ? "external-link" : undefined}
+  data-umami-event-href={isExternal ? href : undefined}
 >
   <slot />
   {

@@ -37,6 +37,22 @@ describe("renderMarkdown — link rendering", () => {
     expect(html).not.toContain("target=");
   });
 
+  it("tags external links for Umami click tracking", async () => {
+    const html = await renderMarkdown("[Astro](https://astro.build)");
+    expect(html).toContain('data-umami-event="external-link"');
+    expect(html).toContain('data-umami-event-href="https://astro.build"');
+  });
+
+  it("tags mailto links for tracking too — they leave the site as much as http does", async () => {
+    const html = await renderMarkdown("[email me](mailto:burak@mulayim.app)");
+    expect(html).toContain('data-umami-event="external-link"');
+  });
+
+  it("leaves internal links untracked so they are not double-counted as pageviews", async () => {
+    const html = await renderMarkdown("[other post](/posts/letter-1)");
+    expect(html).not.toContain("data-umami-event");
+  });
+
   it("preserves markdown formatting inside link text", async () => {
     // Bold inside the link should still render as <strong>, not be eaten by
     // the custom renderer.
