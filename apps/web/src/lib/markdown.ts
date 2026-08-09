@@ -48,8 +48,14 @@ marked.use({
       const newTabAttrs = isNewTabExternal(href)
         ? ` target="_blank" rel="noopener noreferrer"`
         : "";
+      // Mirrors Link.astro's Umami attributes so links inside post bodies are
+      // tracked the same as chrome links. External only — internal links are
+      // already counted as pageviews.
+      const trackingAttrs = isExternalArrow(href)
+        ? ` data-umami-event="external-link" data-umami-event-href="${href}"`
+        : "";
       const arrow = isExternalArrow(href) ? EXTERNAL_ARROW : INTERNAL_ARROW;
-      return `<a href="${href}"${titleAttr}${newTabAttrs} class="group/link">${text}${arrow}</a>`;
+      return `<a href="${href}"${titleAttr}${newTabAttrs}${trackingAttrs} class="group/link">${text}${arrow}</a>`;
     },
   },
 });

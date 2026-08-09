@@ -118,6 +118,24 @@ const ogType = article ? "article" : "website";
     }
 
     <title>{title}</title>
+
+    {
+      /* Umami analytics, self-hosted at umami.mulayim.app. `is:inline` stops
+        Astro bundling it — it has to load from the Umami origin to work.
+
+        `data-domains` scopes tracking to the public hostname, so a production
+        build running anywhere else records nothing: the containerized e2e
+        suite hits http://web:4321 and would otherwise post ~53 pageviews into
+        the dashboard on every CI run. Same protection for `astro preview`
+        locally. Update this if the domain ever changes, or tracking silently
+        stops. */
+    }
+    <script
+      is:inline
+      defer
+      src="https://umami.mulayim.app/script.js"
+      data-website-id="eb05a02f-6259-49ce-bfea-171f59d8a80c"
+      data-domains="burak.mulayim.app"></script>
     <ClientRouter />
   </head>
   <body class="flex min-h-screen flex-col">
